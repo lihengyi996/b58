@@ -703,3 +703,7 @@ start_menu_key_detect:
 	lw $t8, 0($t9)
 	beq $t8, 1, keypress_happen
 	j start_menu_key_detect		# no key is pressed, go back to the first line 
+
+
+
+hahahahhhhhhhhhhhhhhhh
