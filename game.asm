@@ -44,6 +44,7 @@
 .eqv col_yellow		0xfff200
 .eqv col_blue		0x4d6df3
 .eqv col_red		0xed1c24
+.eqv col_black		0x000000
 
 .data
 
@@ -56,27 +57,6 @@ main:
 	j start_menu
 	
 	j main
-	
-
-
-keypress_happen:
-	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
-	beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed	
-	
-	
-start_menu_w_pressed:
-	sw $t3, 1320($t0)
-	sw $t3, 1576($t0)
-	sw $t3, 1832($t0)
-	sw $t3, 2088($t0)
-	sw $t3, 2344($t0)
-	sw $t3, 2600($t0)
-	sw $t3, 2856($t0)
-	sw $t3, 3112($t0)
-	sw $t3, 3368($t0)
-
-
-
 
 start_menu:
 
@@ -86,6 +66,8 @@ start_menu:
 	li $t2, col_yellow		# $t2 stores the yellow color code
 	li $t3, col_blue		# $t3 stores the blue color code
 	li $t4, col_red			# $t4 stores the red color code
+	li $t5, col_black		# $t5 stores the black color code
+
 	
 	# draw the first line "COIN"
 	# draw 'C'
@@ -684,7 +666,8 @@ start_menu:
 	sw $t1, 14480($t0)
 	sw $t1, 14736($t0)
 	
-	# optional cursor
+	# optional cursor position 1
+cursor_position_1:
 	sw $t1, 8244($t0)
 	sw $t4, 8500($t0)
 	sw $t4, 8756($t0)
@@ -696,14 +679,133 @@ start_menu:
 	sw $t4, 8772($t0)
 	sw $t4, 8516($t0)
 	sw $t1, 8260($t0)
+	addi $t6, $zero, 1		# $t6 stores the cursor position and set to 1
+	j start_menu_key_detect
+	
+	# optional cursor position 2
+cursor_position_2:
+	sw $t1, 10036($t0)
+	sw $t4, 10292($t0)
+	sw $t4, 10548($t0)
+	sw $t4, 10804($t0)
+	sw $t4, 11064($t0)
+	sw $t4, 11068($t0)
+	sw $t4, 11072($t0)
+	sw $t4, 10820($t0)
+	sw $t4, 10564($t0)
+	sw $t4, 10308($t0)
+	sw $t1, 10052($t0)
+	addi $t6, $zero, 2		# update cursor position to 2
+	j start_menu_key_detect
+	
+	# optional cursor position 3
+cursor_position_3:
+
+	sw $t1, 11828($t0)
+	sw $t4, 12084($t0)
+	sw $t4, 12340($t0)
+	sw $t4, 12596($t0)
+	sw $t4, 12856($t0)
+	sw $t4, 12860($t0)
+	sw $t4, 12864($t0)
+	sw $t4, 12612($t0)
+	sw $t4, 12356($t0)
+	sw $t4, 12100($t0)
+	sw $t1, 11844($t0)
+	addi $t6, $zero, 3		# update cursor position to 3
+	j start_menu_key_detect
+
+	# optional cursor position 4
+cursor_position_4:
+	sw $t1, 13620($t0)
+	sw $t4, 13876($t0)
+	sw $t4, 14132($t0)
+	sw $t4, 14388($t0)
+	sw $t4, 14648($t0)
+	sw $t4, 14652($t0)
+	sw $t4, 14656($t0)
+	sw $t4, 14404($t0)
+	sw $t4, 14148($t0)
+	sw $t4, 13892($t0)
+	sw $t1, 13636($t0)
+	addi $t6, $zero, 4		# update cursor position to 4
+	j start_menu_key_detect
+
 	
 # drawing is complete, now read user input
 start_menu_key_detect:
 	li $t9, 0xffff0000		# check if a key is pressed by the user
 	lw $t8, 0($t9)
-	beq $t8, 1, keypress_happen
+	beq $t8, 1, keypress_happen	# jump to key detection
 	j start_menu_key_detect		# no key is pressed, go back to the first line 
 
 
-
-hahahahhhhhhhhhhhhhhhh
+keypress_happen:
+	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+	beq $t7, 0x77, start_menu_w_pressed		# check if key 's' is pressed
+	
+	
+	
+start_menu_w_pressed:
+	
+	beq $t6, 1, clear_position_1
+	beq $t6, 2, clear_position_2
+	beq $t6, 3, clear_position_3
+	beq $t6, 4, clear_position_4
+	j start_menu_key_detect	
+	
+clear_position_1:
+	sw $t5, 8244($t0)
+	sw $t5, 8500($t0)
+	sw $t5, 8756($t0)
+	sw $t5, 9012($t0)
+	sw $t5, 9272($t0)
+	sw $t5, 9276($t0)
+	sw $t5, 9280($t0)
+	sw $t5, 9028($t0)
+	sw $t5, 8772($t0)
+	sw $t5, 8516($t0)
+	sw $t5, 8260($t0)
+	j cursor_position_2
+	
+clear_position_2:
+	sw $t5, 10036($t0)
+	sw $t5, 10292($t0)
+	sw $t5, 10548($t0)
+	sw $t5, 10804($t0)
+	sw $t5, 11064($t0)
+	sw $t5, 11068($t0)
+	sw $t5, 11072($t0)
+	sw $t5, 10820($t0)
+	sw $t5, 10564($t0)
+	sw $t5, 10308($t0)
+	sw $t5, 10052($t0)
+	j cursor_position_3
+	
+clear_position_3:
+	sw $t5, 11828($t0)
+	sw $t5, 12084($t0)
+	sw $t5, 12340($t0)
+	sw $t5, 12596($t0)
+	sw $t5, 12856($t0)
+	sw $t5, 12860($t0)
+	sw $t5, 12864($t0)
+	sw $t5, 12612($t0)
+	sw $t5, 12356($t0)
+	sw $t5, 12100($t0)
+	sw $t5, 11844($t0)
+	j cursor_position_4
+	
+clear_position_4:
+	sw $t5, 13620($t0)
+	sw $t5, 13876($t0)
+	sw $t5, 14132($t0)
+	sw $t5, 14388($t0)
+	sw $t5, 14648($t0)
+	sw $t5, 14652($t0)
+	sw $t5, 14656($t0)
+	sw $t5, 14404($t0)
+	sw $t5, 14148($t0)
+	sw $t5, 13892($t0)
+	sw $t5, 13636($t0)
+	j cursor_position_1
