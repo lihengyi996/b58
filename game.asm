@@ -58,6 +58,17 @@ main:
 	
 	j main
 
+# this function clears the screen
+clear_screen:
+	addi $s0, $zero, 0		# $s0 stores 0
+for_loop_clear_screen:
+	bge $s0, 16380, clear_screen_remaining
+	sw $t5, ($t0)
+	addi $t0, $t0, 4
+	j for_loop_clear_screen
+clear_screen_remaining:
+	jr $ra
+
 start_menu:
 
 # draw the start menu page
@@ -742,11 +753,14 @@ start_menu_key_detect:
 
 keypress_happen:
 	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
-	beq $t7, 0x77, start_menu_w_pressed		# check if key 's' is pressed
+	beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
+	beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
+	beq $t7, 0x0a, start_menu_space_pressed	# check if key 'Enter' is pressed
+	j start_menu_key_detect		# no key is pressed, go back to the first line 
 	
 	
 	
-start_menu_w_pressed:
+start_menu_s_pressed:
 	
 	beq $t6, 1, clear_position_1
 	beq $t6, 2, clear_position_2
@@ -809,3 +823,78 @@ clear_position_4:
 	sw $t5, 13892($t0)
 	sw $t5, 13636($t0)
 	j cursor_position_1
+
+start_menu_w_pressed:
+	beq $t6, 1, clear_position_11
+	beq $t6, 2, clear_position_22
+	beq $t6, 3, clear_position_33
+	beq $t6, 4, clear_position_44
+	
+clear_position_11:
+	sw $t5, 8244($t0)
+	sw $t5, 8500($t0)
+	sw $t5, 8756($t0)
+	sw $t5, 9012($t0)
+	sw $t5, 9272($t0)
+	sw $t5, 9276($t0)
+	sw $t5, 9280($t0)
+	sw $t5, 9028($t0)
+	sw $t5, 8772($t0)
+	sw $t5, 8516($t0)
+	sw $t5, 8260($t0)
+	j cursor_position_4
+	
+clear_position_22:
+	sw $t5, 10036($t0)
+	sw $t5, 10292($t0)
+	sw $t5, 10548($t0)
+	sw $t5, 10804($t0)
+	sw $t5, 11064($t0)
+	sw $t5, 11068($t0)
+	sw $t5, 11072($t0)
+	sw $t5, 10820($t0)
+	sw $t5, 10564($t0)
+	sw $t5, 10308($t0)
+	sw $t5, 10052($t0)
+	j cursor_position_1
+	
+clear_position_33:
+	sw $t5, 11828($t0)
+	sw $t5, 12084($t0)
+	sw $t5, 12340($t0)
+	sw $t5, 12596($t0)
+	sw $t5, 12856($t0)
+	sw $t5, 12860($t0)
+	sw $t5, 12864($t0)
+	sw $t5, 12612($t0)
+	sw $t5, 12356($t0)
+	sw $t5, 12100($t0)
+	sw $t5, 11844($t0)
+	j cursor_position_2
+	
+clear_position_44:
+	sw $t5, 13620($t0)
+	sw $t5, 13876($t0)
+	sw $t5, 14132($t0)
+	sw $t5, 14388($t0)
+	sw $t5, 14648($t0)
+	sw $t5, 14652($t0)
+	sw $t5, 14656($t0)
+	sw $t5, 14404($t0)
+	sw $t5, 14148($t0)
+	sw $t5, 13892($t0)
+	sw $t5, 13636($t0)
+	j cursor_position_3
+	
+start_menu_space_pressed:
+	beq $t6, 4, good_bye_page
+	j start_menu_key_detect	
+	
+	
+
+good_bye_page:
+	jal for_loop_clear_screen
+	# Draw "BYE !"
+	
+	li $v0, 10
+	syscall				# the game is terminated by clicking on quit
