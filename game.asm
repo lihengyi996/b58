@@ -57,20 +57,10 @@ main:
 	j start_menu
 	
 	j main
+	
 
-# this function clears the screen
-clear_screen:
-	addi $s0, $zero, 0		# $s0 stores 0
-for_loop_clear_screen:
-	bge $s0, 16380, clear_screen_remaining
-	sw $t5, ($t0)
-	addi $t0, $t0, 4
-	j for_loop_clear_screen
-clear_screen_remaining:
-	jr $ra
-
+# this function initializes the start menu page
 start_menu:
-
 # draw the start menu page
 	li $t0, Base_Address		# $t0 stores the base address of graph pointer
 	li $t1, col_white		# $t1 stores the white color code
@@ -755,7 +745,7 @@ keypress_happen:
 	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
 	beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
 	beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
-	beq $t7, 0x0a, start_menu_space_pressed	# check if key 'Enter' is pressed
+	beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
 	j start_menu_key_detect		# no key is pressed, go back to the first line 
 	
 	
@@ -886,15 +876,43 @@ clear_position_44:
 	sw $t5, 13636($t0)
 	j cursor_position_3
 	
-start_menu_space_pressed:
-	beq $t6, 4, good_bye_page
+start_menu_enter_pressed:
+	beq $t6, 4, good_bye_page		# exit option is selected
 	j start_menu_key_detect	
 	
 	
-
+# this function draw goodbye page and terminates the program
 good_bye_page:
-	jal for_loop_clear_screen
-	# Draw "BYE !"
+	jal clear_screen		# clear the screen
+	# draw the goodbye page
+	sw $t1, 2864($t0)
+	sw $t1, 3120($t0)
+	sw $t1, 3376($t0)
+	sw $t1, 3632($t0)
+	sw $t1, 3888($t0)
+	sw $t1, 4144($t0)
+	sw $t1, 4400($t0)
 	
+	sw $t1, 4656($t0)
+	sw $t1, 4912($t0)
+	sw $t1, 5168($t0)
+	sw $t1, 5424($t0)
+	sw $t1, 5680($t0)
+	sw $t1, 5936($t0)
 	li $v0, 10
 	syscall				# the game is terminated by clicking on quit
+
+
+# this function clears the screen
+clear_screen:
+	addi $s0, $zero, 0				# $s0 stores the index i = 0
+	addi $s1, $t0, 0				# $s1 stores the base address of graph pointer
+	clear_screen_for_loop:
+		bgt $s0, 16380, clear_screen_remaining		# exit condition index i > 16380
+		sw $t5, ($s1)					# clear one pixel to black color
+		addi $s1, $s1, 4				# increment address of graph pointer by 4
+		addi $s0, $s0, 4				# increment index i by 4
+		j clear_screen_for_loop
+	clear_screen_remaining:
+		jr $ra
+
