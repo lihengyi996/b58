@@ -668,214 +668,215 @@ start_menu:
 	sw $t1, 14736($t0)
 	
 	# optional cursor position 1
-cursor_position_1:
-	sw $t1, 8244($t0)
-	sw $t4, 8500($t0)
-	sw $t4, 8756($t0)
-	sw $t4, 9012($t0)
-	sw $t4, 9272($t0)
-	sw $t4, 9276($t0)
-	sw $t4, 9280($t0)
-	sw $t4, 9028($t0)
-	sw $t4, 8772($t0)
-	sw $t4, 8516($t0)
-	sw $t1, 8260($t0)
-	addi $t6, $zero, 1		# $t6 stores the cursor position and set to 1
-	j start_menu_key_detect
+	cursor_position_1:
+		sw $t1, 8244($t0)
+		sw $t4, 8500($t0)
+		sw $t4, 8756($t0)
+		sw $t4, 9012($t0)
+		sw $t4, 9272($t0)
+		sw $t4, 9276($t0)
+		sw $t4, 9280($t0)
+		sw $t4, 9028($t0)
+		sw $t4, 8772($t0)
+		sw $t4, 8516($t0)
+		sw $t1, 8260($t0)
+		addi $t6, $zero, 1		# $t6 stores the cursor position and set to 1
+		j start_menu_key_detect
 	
 	# optional cursor position 2
-cursor_position_2:
-	sw $t1, 10036($t0)
-	sw $t4, 10292($t0)
-	sw $t4, 10548($t0)
-	sw $t4, 10804($t0)
-	sw $t4, 11064($t0)
-	sw $t4, 11068($t0)
-	sw $t4, 11072($t0)
-	sw $t4, 10820($t0)
-	sw $t4, 10564($t0)
-	sw $t4, 10308($t0)
-	sw $t1, 10052($t0)
-	addi $t6, $zero, 2		# update cursor position to 2
-	j start_menu_key_detect
+	cursor_position_2:
+		sw $t1, 10036($t0)
+		sw $t4, 10292($t0)
+		sw $t4, 10548($t0)
+		sw $t4, 10804($t0)
+		sw $t4, 11064($t0)
+		sw $t4, 11068($t0)
+		sw $t4, 11072($t0)
+		sw $t4, 10820($t0)
+		sw $t4, 10564($t0)
+		sw $t4, 10308($t0)
+		sw $t1, 10052($t0)
+		addi $t6, $zero, 2		# update cursor position to 2
+		j start_menu_key_detect
 	
 	# optional cursor position 3
-cursor_position_3:
+	cursor_position_3:
 
-	sw $t1, 11828($t0)
-	sw $t4, 12084($t0)
-	sw $t4, 12340($t0)
-	sw $t4, 12596($t0)
-	sw $t4, 12856($t0)
-	sw $t4, 12860($t0)
-	sw $t4, 12864($t0)
-	sw $t4, 12612($t0)
-	sw $t4, 12356($t0)
-	sw $t4, 12100($t0)
-	sw $t1, 11844($t0)
-	addi $t6, $zero, 3		# update cursor position to 3
-	j start_menu_key_detect
+		sw $t1, 11828($t0)
+		sw $t4, 12084($t0)
+		sw $t4, 12340($t0)
+		sw $t4, 12596($t0)
+		sw $t4, 12856($t0)
+		sw $t4, 12860($t0)
+		sw $t4, 12864($t0)
+		sw $t4, 12612($t0)
+		sw $t4, 12356($t0)
+		sw $t4, 12100($t0)
+		sw $t1, 11844($t0)
+		addi $t6, $zero, 3		# update cursor position to 3
+		j start_menu_key_detect
 
 	# optional cursor position 4
-cursor_position_4:
-	sw $t1, 13620($t0)
-	sw $t4, 13876($t0)
-	sw $t4, 14132($t0)
-	sw $t4, 14388($t0)
-	sw $t4, 14648($t0)
-	sw $t4, 14652($t0)
-	sw $t4, 14656($t0)
-	sw $t4, 14404($t0)
-	sw $t4, 14148($t0)
-	sw $t4, 13892($t0)
-	sw $t1, 13636($t0)
-	addi $t6, $zero, 4		# update cursor position to 4
-	j start_menu_key_detect
+	cursor_position_4:
+		sw $t1, 13620($t0)
+		sw $t4, 13876($t0)
+		sw $t4, 14132($t0)
+		sw $t4, 14388($t0)
+		sw $t4, 14648($t0)
+		sw $t4, 14652($t0)
+		sw $t4, 14656($t0)
+		sw $t4, 14404($t0)
+		sw $t4, 14148($t0)
+		sw $t4, 13892($t0)
+		sw $t1, 13636($t0)
+		addi $t6, $zero, 4		# update cursor position to 4
+		j start_menu_key_detect
 
 	
-# drawing is complete, now read user input
-start_menu_key_detect:
-	li $t9, 0xffff0000		# check if a key is pressed by the user
-	lw $t8, 0($t9)
-	beq $t8, 1, keypress_happen	# jump to key detection
-	j start_menu_key_detect		# no key is pressed, go back to the first line 
+	# drawing is complete, now read user input
+	start_menu_key_detect:
+		li $t9, 0xffff0000		# check if a key is pressed by the user
+		lw $t8, 0($t9)
+		beq $t8, 1, keypress_happen	# jump to key detection
+		j start_menu_key_detect		# no key is pressed, go back to the first line 
 
 
-keypress_happen:
-	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
-	beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
-	beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
-	beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
-	j start_menu_key_detect		# no key is pressed, go back to the first line 
+	keypress_happen:
+		lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+		beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
+		beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
+		beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
+		j start_menu_key_detect		# no key is pressed, go back to the first line 
 	
 	
-	
+# this function deals with the case when s is pressed in start menu
 start_menu_s_pressed:
-	
 	beq $t6, 1, clear_position_1
 	beq $t6, 2, clear_position_2
 	beq $t6, 3, clear_position_3
 	beq $t6, 4, clear_position_4
 	j start_menu_key_detect	
 	
-clear_position_1:
-	sw $t5, 8244($t0)
-	sw $t5, 8500($t0)
-	sw $t5, 8756($t0)
-	sw $t5, 9012($t0)
-	sw $t5, 9272($t0)
-	sw $t5, 9276($t0)
-	sw $t5, 9280($t0)
-	sw $t5, 9028($t0)
-	sw $t5, 8772($t0)
-	sw $t5, 8516($t0)
-	sw $t5, 8260($t0)
-	j cursor_position_2
+	clear_position_1:
+		sw $t5, 8244($t0)
+		sw $t5, 8500($t0)
+		sw $t5, 8756($t0)
+		sw $t5, 9012($t0)
+		sw $t5, 9272($t0)
+		sw $t5, 9276($t0)
+		sw $t5, 9280($t0)
+		sw $t5, 9028($t0)
+		sw $t5, 8772($t0)
+		sw $t5, 8516($t0)
+		sw $t5, 8260($t0)
+		j cursor_position_2
 	
-clear_position_2:
-	sw $t5, 10036($t0)
-	sw $t5, 10292($t0)
-	sw $t5, 10548($t0)
-	sw $t5, 10804($t0)
-	sw $t5, 11064($t0)
-	sw $t5, 11068($t0)
-	sw $t5, 11072($t0)
-	sw $t5, 10820($t0)
-	sw $t5, 10564($t0)
-	sw $t5, 10308($t0)
-	sw $t5, 10052($t0)
-	j cursor_position_3
+	clear_position_2:
+		sw $t5, 10036($t0)
+		sw $t5, 10292($t0)
+		sw $t5, 10548($t0)
+		sw $t5, 10804($t0)
+		sw $t5, 11064($t0)
+		sw $t5, 11068($t0)
+		sw $t5, 11072($t0)
+		sw $t5, 10820($t0)
+		sw $t5, 10564($t0)
+		sw $t5, 10308($t0)
+		sw $t5, 10052($t0)
+		j cursor_position_3
 	
-clear_position_3:
-	sw $t5, 11828($t0)
-	sw $t5, 12084($t0)
-	sw $t5, 12340($t0)
-	sw $t5, 12596($t0)
-	sw $t5, 12856($t0)
-	sw $t5, 12860($t0)
-	sw $t5, 12864($t0)
-	sw $t5, 12612($t0)
-	sw $t5, 12356($t0)
-	sw $t5, 12100($t0)
-	sw $t5, 11844($t0)
-	j cursor_position_4
+	clear_position_3:
+		sw $t5, 11828($t0)
+		sw $t5, 12084($t0)
+		sw $t5, 12340($t0)
+		sw $t5, 12596($t0)
+		sw $t5, 12856($t0)
+		sw $t5, 12860($t0)
+		sw $t5, 12864($t0)
+		sw $t5, 12612($t0)
+		sw $t5, 12356($t0)
+		sw $t5, 12100($t0)
+		sw $t5, 11844($t0)
+		j cursor_position_4
 	
-clear_position_4:
-	sw $t5, 13620($t0)
-	sw $t5, 13876($t0)
-	sw $t5, 14132($t0)
-	sw $t5, 14388($t0)
-	sw $t5, 14648($t0)
-	sw $t5, 14652($t0)
-	sw $t5, 14656($t0)
-	sw $t5, 14404($t0)
-	sw $t5, 14148($t0)
-	sw $t5, 13892($t0)
-	sw $t5, 13636($t0)
-	j cursor_position_1
-
+	clear_position_4:
+		sw $t5, 13620($t0)
+		sw $t5, 13876($t0)
+		sw $t5, 14132($t0)
+		sw $t5, 14388($t0)
+		sw $t5, 14648($t0)
+		sw $t5, 14652($t0)
+		sw $t5, 14656($t0)
+		sw $t5, 14404($t0)
+		sw $t5, 14148($t0)
+		sw $t5, 13892($t0)
+		sw $t5, 13636($t0)
+		j cursor_position_1
+		
+# this function deals with the case when w is pressed in start menu
 start_menu_w_pressed:
 	beq $t6, 1, clear_position_11
 	beq $t6, 2, clear_position_22
 	beq $t6, 3, clear_position_33
 	beq $t6, 4, clear_position_44
 	
-clear_position_11:
-	sw $t5, 8244($t0)
-	sw $t5, 8500($t0)
-	sw $t5, 8756($t0)
-	sw $t5, 9012($t0)
-	sw $t5, 9272($t0)
-	sw $t5, 9276($t0)
-	sw $t5, 9280($t0)
-	sw $t5, 9028($t0)
-	sw $t5, 8772($t0)
-	sw $t5, 8516($t0)
-	sw $t5, 8260($t0)
-	j cursor_position_4
+	clear_position_11:
+		sw $t5, 8244($t0)
+		sw $t5, 8500($t0)
+		sw $t5, 8756($t0)
+		sw $t5, 9012($t0)
+		sw $t5, 9272($t0)
+		sw $t5, 9276($t0)
+		sw $t5, 9280($t0)
+		sw $t5, 9028($t0)
+		sw $t5, 8772($t0)
+		sw $t5, 8516($t0)
+		sw $t5, 8260($t0)
+		j cursor_position_4
 	
-clear_position_22:
-	sw $t5, 10036($t0)
-	sw $t5, 10292($t0)
-	sw $t5, 10548($t0)
-	sw $t5, 10804($t0)
-	sw $t5, 11064($t0)
-	sw $t5, 11068($t0)
-	sw $t5, 11072($t0)
-	sw $t5, 10820($t0)
-	sw $t5, 10564($t0)
-	sw $t5, 10308($t0)
-	sw $t5, 10052($t0)
-	j cursor_position_1
+	clear_position_22:
+		sw $t5, 10036($t0)
+		sw $t5, 10292($t0)
+		sw $t5, 10548($t0)
+		sw $t5, 10804($t0)
+		sw $t5, 11064($t0)
+		sw $t5, 11068($t0)
+		sw $t5, 11072($t0)
+		sw $t5, 10820($t0)
+		sw $t5, 10564($t0)
+		sw $t5, 10308($t0)
+		sw $t5, 10052($t0)
+		j cursor_position_1
 	
-clear_position_33:
-	sw $t5, 11828($t0)
-	sw $t5, 12084($t0)
-	sw $t5, 12340($t0)
-	sw $t5, 12596($t0)
-	sw $t5, 12856($t0)
-	sw $t5, 12860($t0)
-	sw $t5, 12864($t0)
-	sw $t5, 12612($t0)
-	sw $t5, 12356($t0)
-	sw $t5, 12100($t0)
-	sw $t5, 11844($t0)
-	j cursor_position_2
+	clear_position_33:
+		sw $t5, 11828($t0)
+		sw $t5, 12084($t0)
+		sw $t5, 12340($t0)
+		sw $t5, 12596($t0)
+		sw $t5, 12856($t0)
+		sw $t5, 12860($t0)
+		sw $t5, 12864($t0)
+		sw $t5, 12612($t0)
+		sw $t5, 12356($t0)
+		sw $t5, 12100($t0)
+		sw $t5, 11844($t0)
+		j cursor_position_2
 	
-clear_position_44:
-	sw $t5, 13620($t0)
-	sw $t5, 13876($t0)
-	sw $t5, 14132($t0)
-	sw $t5, 14388($t0)
-	sw $t5, 14648($t0)
-	sw $t5, 14652($t0)
-	sw $t5, 14656($t0)
-	sw $t5, 14404($t0)
-	sw $t5, 14148($t0)
-	sw $t5, 13892($t0)
-	sw $t5, 13636($t0)
-	j cursor_position_3
-	
+	clear_position_44:
+		sw $t5, 13620($t0)
+		sw $t5, 13876($t0)
+		sw $t5, 14132($t0)
+		sw $t5, 14388($t0)
+		sw $t5, 14648($t0)
+		sw $t5, 14652($t0)
+		sw $t5, 14656($t0)
+		sw $t5, 14404($t0)
+		sw $t5, 14148($t0)
+		sw $t5, 13892($t0)
+		sw $t5, 13636($t0)
+		j cursor_position_3
+
+# this function deals with the case when Enter is pressed in start menu
 start_menu_enter_pressed:
 	beq $t6, 4, good_bye_page		# exit option is selected
 	j start_menu_key_detect	
