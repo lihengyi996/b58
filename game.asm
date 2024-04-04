@@ -50,26 +50,60 @@
 
 .text
 
-.globl main
-
-main:
-
-	# load the start-up menu
-	j start_menu
-	
-	j main
-	
-
-# this function initializes the start menu page
-start_menu:
-# load color codes to registers
+	# load color codes to registers
 	li $t0, Base_Address		# $t0 stores the base address of graph pointer
 	li $t1, col_white		# $t1 stores the white color code
 	li $t2, col_yellow		# $t2 stores the yellow color code
 	li $t3, col_blue		# $t3 stores the blue color code
 	li $t4, col_red			# $t4 stores the red color code
 	li $t5, col_black		# $t5 stores the black color code
+
+main:
+	# load the start-up menu
+	j start_menu
+	main_level_1:
+		addi $s2, $t0, 8968			# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 9048			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6488			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6584			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 4016			# $s3 stores the coin address
+		jal draw_coin
+
+
+		j main_level_1
+	j main
 	
+# this function draws the player
+draw_player:
+	sw $t4, ($s2)
+	sw $t4, -260($s2)
+	sw $t4, -516($s2)
+	sw $t1, -772($s2)
+	sw $t4, -252($s2)
+	sw $t4, -508($s2)
+	sw $t1, -764($s2)
+	jr $ra
+	
+draw_coin:
+	sw $t2, ($s3)
+	sw $t2, -256($s3)
+	sw $t2, -512($s3)
+	sw $t2, -768($s3)
+	sw $t2, -252($s3)
+	sw $t2, -260($s3)
+	sw $t2, -508($s3)
+	sw $t2, -516($s3)
+	jr $ra
+
+
+
+
+# this function initializes the start menu page
+start_menu:
 	jal clear_screen	# clear the screen first before drawing
 	
 	# draw the first line "COIN"
@@ -685,71 +719,70 @@ start_menu:
 		addi $t6, $zero, 1		# $t6 stores the cursor position and set to 1
 		j start_menu_key_detect
 	
-	# optional cursor position 2
-	cursor_position_2:
-		sw $t1, 10036($t0)
-		sw $t4, 10292($t0)
-		sw $t4, 10548($t0)
-		sw $t4, 10804($t0)
-		sw $t4, 11064($t0)
-		sw $t4, 11068($t0)
-		sw $t4, 11072($t0)
-		sw $t4, 10820($t0)
-		sw $t4, 10564($t0)
-		sw $t4, 10308($t0)
-		sw $t1, 10052($t0)
-		addi $t6, $zero, 2		# update cursor position to 2
-		j start_menu_key_detect
+# optional cursor position 2
+cursor_position_2:
+	sw $t1, 10036($t0)
+	sw $t4, 10292($t0)
+	sw $t4, 10548($t0)
+	sw $t4, 10804($t0)
+	sw $t4, 11064($t0)
+	sw $t4, 11068($t0)
+	sw $t4, 11072($t0)
+	sw $t4, 10820($t0)
+	sw $t4, 10564($t0)
+	sw $t4, 10308($t0)
+	sw $t1, 10052($t0)
+	addi $t6, $zero, 2		# update cursor position to 2
+	j start_menu_key_detect
 	
-	# optional cursor position 3
-	cursor_position_3:
+# optional cursor position 3
+cursor_position_3:
+	sw $t1, 11828($t0)
+	sw $t4, 12084($t0)
+	sw $t4, 12340($t0)
+	sw $t4, 12596($t0)
+	sw $t4, 12856($t0)
+	sw $t4, 12860($t0)
+	sw $t4, 12864($t0)
+	sw $t4, 12612($t0)
+	sw $t4, 12356($t0)
+	sw $t4, 12100($t0)
+	sw $t1, 11844($t0)
+	addi $t6, $zero, 3		# update cursor position to 3
+	j start_menu_key_detect
 
-		sw $t1, 11828($t0)
-		sw $t4, 12084($t0)
-		sw $t4, 12340($t0)
-		sw $t4, 12596($t0)
-		sw $t4, 12856($t0)
-		sw $t4, 12860($t0)
-		sw $t4, 12864($t0)
-		sw $t4, 12612($t0)
-		sw $t4, 12356($t0)
-		sw $t4, 12100($t0)
-		sw $t1, 11844($t0)
-		addi $t6, $zero, 3		# update cursor position to 3
-		j start_menu_key_detect
-
-	# optional cursor position 4
-	cursor_position_4:
-		sw $t1, 13620($t0)
-		sw $t4, 13876($t0)
-		sw $t4, 14132($t0)
-		sw $t4, 14388($t0)
-		sw $t4, 14648($t0)
-		sw $t4, 14652($t0)
-		sw $t4, 14656($t0)
-		sw $t4, 14404($t0)
-		sw $t4, 14148($t0)
-		sw $t4, 13892($t0)
-		sw $t1, 13636($t0)
-		addi $t6, $zero, 4		# update cursor position to 4
-		j start_menu_key_detect
+# optional cursor position 4
+cursor_position_4:
+	sw $t1, 13620($t0)
+	sw $t4, 13876($t0)
+	sw $t4, 14132($t0)
+	sw $t4, 14388($t0)
+	sw $t4, 14648($t0)
+	sw $t4, 14652($t0)
+	sw $t4, 14656($t0)
+	sw $t4, 14404($t0)
+	sw $t4, 14148($t0)
+	sw $t4, 13892($t0)
+	sw $t1, 13636($t0)
+	addi $t6, $zero, 4		# update cursor position to 4
+	j start_menu_key_detect
 
 	
-	# drawing is complete, now read user input
-	start_menu_key_detect:
-		li $t9, 0xffff0000		# check if a key is pressed by the user
-		lw $t8, 0($t9)
-		beq $t8, 1, keypress_happen	# jump to key detection
-		j start_menu_key_detect		# no key is pressed, go back to the first line 
+# drawing is complete, now read user input
+start_menu_key_detect:
+	li $t9, 0xffff0000		# check if a key is pressed by the user
+	lw $t8, 0($t9)
+	beq $t8, 1, keypress_happen	# jump to key detection
+	j start_menu_key_detect		# no key is pressed, go back to the first line 
 
 
-	keypress_happen:
-		lw $t7, 4($t9)					# $t7 stores the key value pressed by user
-		beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
-		beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
-		beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
-		beq $t7, 0x71, start_menu_q_pressed		# check if key 'q' is pressed
-		j start_menu_key_detect		# no key is pressed, go back to the first line 
+keypress_happen:
+	lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+	beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
+	beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
+	beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
+	beq $t7, 0x71, start_menu_q_pressed		# check if key 'q' is pressed
+	j start_menu_key_detect		# no key is pressed, go back to the first line 
 	
 	
 # this function deals with the case when s is pressed in start menu
@@ -1101,7 +1134,7 @@ level_1_page:
 	level_1_page_remaining5:
 	# draw platform two
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
-	addi $s1, $t0, 6472			# $s1 stores the address of graph pointer
+	addi $s1, $t0, 6732			# $s1 stores the address of graph pointer
 	level_1_page_loop6:
 		bge $s0, 31, level_1_page_remaining6	# exit condition: $s0 >= 25
 		sw $t1, ($s1)				# draw white line
@@ -1129,11 +1162,8 @@ level_1_page:
 		addi $s1, $s1, 4			# increment graph pointer by 16
 		j level_1_page_loop8
 	level_1_page_remaining8:
-
-
-	##############################add code##########################
-	li $v0, 10
-	syscall
+	
+	j main_level_1
 	
 # this function launch level 2 game
 level_2_page:
@@ -1275,6 +1305,57 @@ level_3_page:
 		addi $s1, $s1, 16			# increment graph pointer by 16
 		j level_3_page_loop4
 	level_3_page_remaining4:
+	# draw platforms
+	# draw platform one
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 8448			# $s1 stores the address of graph pointer
+	level_3_page_loop5:
+		bge $s0, 7, level_3_page_remaining5	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop5
+	level_3_page_remaining5:
+	# draw platform two
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 6452			# $s1 stores the address of graph pointer
+	level_3_page_loop6:
+		bge $s0, 7, level_3_page_remaining6	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop6
+	level_3_page_remaining6:
+	# draw platform three
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 4716			# $s1 stores the address of graph pointer
+	level_3_page_loop7:
+		bge $s0, 7, level_3_page_remaining7	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop7
+	level_3_page_remaining7:
+	# draw platform four
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 6572			# $s1 stores the address of graph pointer
+	level_3_page_loop8:
+		bge $s0, 7, level_3_page_remaining8	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop8
+	level_3_page_remaining8:
+	# draw platform five
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 9188			# $s1 stores the address of graph pointer
+	level_3_page_loop9:
+		bge $s0, 7, level_3_page_remaining9	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop9
+	level_3_page_remaining9:
 	
 	##############################add code##########################
 	li $v0, 10
