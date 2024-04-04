@@ -77,7 +77,26 @@ main:
 		addi $s3, $t0, 9964			# $s3 stores the red cross address
 		jal draw_red_cross
 		
-		j main_level_1
+		###############################
+		###############################
+		level_1_after_moving:
+			li $t9, 0xffff0000		# check if a key is pressed by the user
+			lw $t8, 0($t9)
+			beq $t8, 1, keypress_level_1	# jump to key detection
+			j level_1_after_moving		# no key is pressed, go back to the first line 
+		
+		keypress_level_1: 
+			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+			beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
+			beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
+			beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
+			beq $t7, 0x71, start_menu_q_pressed		# check if key 'q' is pressed
+			j start_menu_key_detect				# no key is pressed, go back to the first line 
+	
+		############################################
+		############################################
+		
+		j level_1_after_moving
 		
 	main_level_2:
 		addi $s2, $t0, 9228			# $s2 stores the player address
