@@ -94,9 +94,22 @@ main:
 		jal draw_red_cross
 		addi $s3, $t0, 5832			# $s3 stores the blue cross address
 		jal draw_blue_cross
-
-
 		j main_level_2
+	
+	main_level_3:
+		addi $s2, $t0, 8208		# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 6212			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 4476		# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6332		# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 8948			# $s3 stores the blue cross address
+		jal draw_blue_cross
+		j main_level_3
+	
+	
 	j main
 	
 # this function draws the player
@@ -1388,7 +1401,4 @@ level_3_page:
 		addi $s1, $s1, 4			# increment graph pointer by 16
 		j level_3_page_loop9
 	level_3_page_remaining9:
-	
-	##############################add code##########################
-	li $v0, 10
-	syscall
+	j main_level_3
