@@ -72,9 +72,31 @@ main:
 		jal draw_coin
 		addi $s3, $t0, 4016			# $s3 stores the coin address
 		jal draw_coin
-
-
+		addi $s3, $t0, 4080			# $s3 stores the blue cross address
+		jal draw_blue_cross
+		addi $s3, $t0, 9964			# $s3 stores the red cross address
+		jal draw_red_cross
+		
 		j main_level_1
+		
+	main_level_2:
+		addi $s2, $t0, 9228			# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 	2324			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 	2372			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 5780			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 2544			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 2488			# $s3 stores the red cross address
+		jal draw_red_cross
+		addi $s3, $t0, 5832			# $s3 stores the blue cross address
+		jal draw_blue_cross
+
+
+		j main_level_2
 	j main
 	
 # this function draws the player
@@ -99,8 +121,21 @@ draw_coin:
 	sw $t2, -516($s3)
 	jr $ra
 
-
-
+draw_blue_cross:
+	sw $t3, -256($s3)
+	sw $t3, -4($s3)
+	sw $t3, 4($s3)
+	sw $t3, -516($s3)
+	sw $t3, -508($s3)
+	jr $ra
+	
+draw_red_cross:
+	sw $t4, ($s3)
+	sw $t4, -256($s3)
+	sw $t4, -252($s3)
+	sw $t4, -260($s3)
+	sw $t4, -512($s3)
+	jr $ra
 
 # this function initializes the start menu page
 start_menu:
@@ -1254,10 +1289,7 @@ level_2_page:
 	level_2_page_remaining8:
 
 
-	##############################add code##########################
-
-	li $v0, 10
-	syscall
+	j main_level_2
 	
 # this function launch level 3 game
 level_3_page:
