@@ -884,6 +884,7 @@ start_menu_enter_pressed:
 	beq $t6, 4, good_bye_page		# exit option is selected
 	beq $t6, 1, level_1_page		# level 1 is selected
 	beq $t6, 2, level_2_page		# level 2 is seleted
+	beq $t6, 3, level_3_page		# level 3 is seleted	
 	j start_menu_key_detect	
 	
 # this function deals with the case when q is pressed in start menu
@@ -1225,5 +1226,56 @@ level_2_page:
 
 	##############################add code##########################
 
+	li $v0, 10
+	syscall
+	
+# this function launch level 3 game
+level_3_page:
+	jal clear_screen			# clear screen content
+	# draw background
+	# draw the white line
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
+	level_3_page_loop1:
+		bge $s0, 64, level_3_page_remaining1	# exit condition: $s0 >= 64
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 4
+		j level_3_page_loop1
+	level_3_page_remaining1:
+	# draw ocean waves
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 12032			# $s1 stores the address of graph pointer
+	level_3_page_loop2:
+		bge $s0, 64, level_3_page_remaining2	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 4
+		j level_3_page_loop2
+	level_3_page_remaining2:
+	# draw secondary waves
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 11780			# $s1 stores the address of graph pointer
+	level_3_page_loop3:
+		bge $s0, 16, level_3_page_remaining3	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		sw $t3, 4($s1)
+		sw $t3, 8($s1)
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 16			# increment graph pointer by 16
+		j level_3_page_loop3
+	level_3_page_remaining3:
+	# draw final layer of waves
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 11528			# $s1 stores the address of graph pointer
+	level_3_page_loop4:
+		bge $s0, 16, level_3_page_remaining4	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 16			# increment graph pointer by 16
+		j level_3_page_loop4
+	level_3_page_remaining4:
+	
+	##############################add code##########################
 	li $v0, 10
 	syscall
