@@ -881,6 +881,7 @@ start_menu_w_pressed:
 start_menu_enter_pressed:
 	beq $t6, 4, good_bye_page		# exit option is selected
 	beq $t6, 1, level_1_page		# level 1 is selected
+	beq $t6, 2, level_2_page		# level 2 is seleted
 	j start_menu_key_detect	
 	
 # this function deals with the case when q is pressed in start menu
@@ -1045,15 +1046,108 @@ level_1_page:
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
 	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
-	level_1_page_loop:
-		bge $s0, 64, level_1_page_remaining	# exit condition: $s0 >= 64
+	level_1_page_loop1:
+		bge $s0, 64, level_1_page_remaining1	# exit condition: $s0 >= 64
 		sw $t1, ($s1)				# draw white line
 		addi $s0, $s0, 1			# increment index by 1
 		addi $s1, $s1, 4			# increment graph pointer by 4
-		j level_1_page_loop
-	level_1_page_remaining:
+		j level_1_page_loop1
+	level_1_page_remaining1:
 	# draw ocean waves
-	
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 12032			# $s1 stores the address of graph pointer
+	level_1_page_loop2:
+		bge $s0, 64, level_1_page_remaining2	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 4
+		j level_1_page_loop2
+	level_1_page_remaining2:
+	# draw secondary waves
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 11780			# $s1 stores the address of graph pointer
+	level_1_page_loop3:
+		bge $s0, 16, level_1_page_remaining3	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		sw $t3, 4($s1)
+		sw $t3, 8($s1)
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 16			# increment graph pointer by 16
+		j level_1_page_loop3
+	level_1_page_remaining3:
+	# draw final layer of waves
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 11528			# $s1 stores the address of graph pointer
+	level_1_page_loop4:
+		bge $s0, 16, level_1_page_remaining4	# exit condition: $s0 >= 64
+		sw $t3, ($s1)				# draw blue line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 16			# increment graph pointer by 16
+		j level_1_page_loop4
+	level_1_page_remaining4:
+	# draw platforms
+	# draw platform one
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 9216			# $s1 stores the address of graph pointer
+	level_1_page_loop5:
+		bge $s0, 25, level_1_page_remaining5	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_1_page_loop5
+	level_1_page_remaining5:
+	# draw platform two
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 6472			# $s1 stores the address of graph pointer
+	level_1_page_loop6:
+		bge $s0, 31, level_1_page_remaining6	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_1_page_loop6
+	level_1_page_remaining6:
+	# draw platform three
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 4260			# $s1 stores the address of graph pointer
+	level_1_page_loop7:
+		bge $s0, 23, level_1_page_remaining7	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_1_page_loop7
+	level_1_page_remaining7:
+	# draw platform four
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 	10172		# $s1 stores the address of graph pointer
+	level_1_page_loop8:
+		bge $s0, 17, level_1_page_remaining8	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_1_page_loop8
+	level_1_page_remaining8:
+
+
+	##############################add code##########################
 	li $v0, 10
 	syscall
 	
+# this function launch level 2 game
+level_2_page:
+	jal clear_screen			# clear screen content
+	# draw background
+	# draw the white line
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
+	level_2_page_loop1:
+		bge $s0, 64, level_2_page_remaining1	# exit condition: $s0 >= 64
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 4
+		j level_2_page_loop1
+	level_2_page_remaining1:
+	# draw ocean waves
+
+
+	li $v0, 10
+	syscall
