@@ -110,7 +110,6 @@ main:
 		level_1_d_pressed:
 			beq $s7, 62, level_1_key_detect			# if player already on the boundary, no action requires 
 
-			continue:
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, 4				# update the new location of the player
 			addi $s7, $s7, 1
@@ -144,41 +143,184 @@ main:
 				jal draw_player
 				j level_1_key_detect
 		
-				li $v0, 32
-				li $a0, 3000 # Wait one second (1000 milliseconds)
-				syscall
+			li $v0, 32
+			li $a0, 3000 # Wait one second (1000 milliseconds)
+			syscall
 		
 		j level_1_key_detect
 		
 	main_level_2:
-		addi $s2, $t0, 9228			# $s2 stores the player address
-		jal draw_player
-		addi $s3, $t0, 	2324			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 	2372			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 5780			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 2544			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 2488			# $s3 stores the red cross address
-		jal draw_red_cross
-		addi $s3, $t0, 5832			# $s3 stores the blue cross address
-		jal draw_blue_cross
-		j main_level_2
+		
+		
+		
+			level_2_key_detect:
+			
+			gravity_check_level_2:
+				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+				lw $s5, ($s6)		
+				beq $s5, 0xffffff, continuation_level_2
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_2
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_2
+				# player is in the air
+				# player should be pulled down to the ground
+				jal delete_player
+				addi $s2, $s2, 256
+				jal draw_player	
+				
+				li $v0, 32
+				li $a0, 100 # Wait one second (1000 milliseconds)
+				syscall
+
+
+
+
+
+			continuation_level_2:
+				li $t9, 0xffff0000		# check if a key is pressed by the user
+				lw $t8, 0($t9)
+				beq $t8, 1, keypress_level_2	# jump to key detection
+				j level_2_key_detect		# no key is pressed, go back to the first line 
+		
+			keypress_level_2: 
+
+			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+			beq $t7, 0x64, level_2_d_pressed		# check if key 'd' is pressed
+			beq $t7, 0x61, level_2_a_pressed		# check if key 'a' is pressed
+			beq $t7, 0x77, level_2_w_pressed		# check if key 'q' is pressed
+			j level_2_key_detect				# no key is pressed, go back to the first line 
+			
+		level_2_d_pressed:
+			beq $s7, 62, level_2_key_detect			# if player already on the boundary, no action requires 
+
+
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, 4				# update the new location of the player
+			addi $s7, $s7, 1
+			jal draw_player					# draw the player at the new position
+			j level_2_key_detect
+		
+		level_2_a_pressed:
+			beq $s7, 1, level_2_key_detect			# if player already on the boundary, no action requires 
+
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, -4				# update the new location of the player
+			addi $s7, $s7, -1
+			jal draw_player					# draw the player at the new position
+			j level_2_key_detect
+
+		level_2_w_pressed:
+			add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+			addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+			lw $s5, ($s6)		
+			beq $s5, 0xffffff, level_2_w_continue
+			addi $s6, $s6, -4
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_2_w_continue
+			addi $s6, $s6, 8
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_2_w_continue
+			j level_2_key_detect
+			level_2_w_continue:
+				jal delete_player
+				addi $s2, $s2, -4352
+				jal draw_player
+				j level_2_key_detect
+		
+			li $v0, 32
+			li $a0, 3000 # Wait one second (1000 milliseconds)
+			syscall
+		
+		j level_2_key_detect
+		
+		
+		
+		
+		
+		
 	
 	main_level_3:
-		addi $s2, $t0, 8208		# $s2 stores the player address
-		jal draw_player
-		addi $s3, $t0, 6212			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 4476		# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 6332		# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 8948			# $s3 stores the blue cross address
-		jal draw_blue_cross
-		j main_level_3
+			level_3_key_detect:
+			gravity_check_level_3:
+				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+				lw $s5, ($s6)		
+				beq $s5, 0xffffff, continuation_level_3
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_3
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_3
+				# player is in the air
+				# player should be pulled down to the ground
+				jal delete_player
+				addi $s2, $s2, 256
+				jal draw_player	
+				
+				li $v0, 32
+				li $a0, 100 # Wait one second (1000 milliseconds)
+				syscall
+
+			continuation_level_3:
+				li $t9, 0xffff0000		# check if a key is pressed by the user
+				lw $t8, 0($t9)
+				beq $t8, 1, keypress_level_3	# jump to key detection
+				j level_3_key_detect		# no key is pressed, go back to the first line 
+		
+			keypress_level_3: 
+			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+			beq $t7, 0x64, level_3_d_pressed		# check if key 'd' is pressed
+			beq $t7, 0x61, level_3_a_pressed		# check if key 'a' is pressed
+			beq $t7, 0x77, level_3_w_pressed		# check if key 'q' is pressed
+			j level_3_key_detect				# no key is pressed, go back to the first line 
+			
+		level_3_d_pressed:
+			beq $s7, 62, level_3_key_detect			# if player already on the boundary, no action requires 
+
+
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, 4				# update the new location of the player
+			addi $s7, $s7, 1
+			jal draw_player					# draw the player at the new position
+			j level_3_key_detect
+		
+		level_3_a_pressed:
+			beq $s7, 1, level_3_key_detect			# if player already on the boundary, no action requires 
+
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, -4				# update the new location of the player
+			addi $s7, $s7, -1
+			jal draw_player					# draw the player at the new position
+			j level_3_key_detect
+
+		level_3_w_pressed:
+			add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+			addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+			lw $s5, ($s6)		
+			beq $s5, 0xffffff, level_3_w_continue
+			addi $s6, $s6, -4
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_3_w_continue
+			addi $s6, $s6, 8
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_3_w_continue
+			j level_3_key_detect
+			level_3_w_continue:
+				jal delete_player
+				addi $s2, $s2, -4352
+				jal draw_player
+				j level_3_key_detect
+		
+			li $v0, 32
+			li $a0, 3000 # Wait one second (1000 milliseconds)
+			syscall
+		
+		j level_3_key_detect
 	
 	
 	j main
@@ -207,7 +349,54 @@ initialize_position_level_1:
 		lw $ra, ($sp)
 		addi $sp, $sp, 4			# pop $ra from the stack
 		jr $ra
+
+# this function initialize the original position of all objects
+initialize_position_level_2:
+		addi $sp, $sp, -4
+		sw $ra, ($sp)				# push $ra to the stack
 		
+		addi $s2, $t0, 9228			# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 	2324			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 	2372			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 5780			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 2544			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 2488			# $s3 stores the red cross address
+		jal draw_red_cross
+		addi $s3, $t0, 5832			# $s3 stores the blue cross address
+		jal draw_blue_cross
+		
+		addi $s7, $zero, 3			# set the x-coordinate to 2 as original position
+		lw $ra, ($sp)
+		addi $sp, $sp, 4			# pop $ra from the stack
+		jr $ra
+
+# this function initialize the original position of all objects
+initialize_position_level_3:
+		addi $sp, $sp, -4
+		sw $ra, ($sp)				# push $ra to the stack
+		
+		addi $s2, $t0, 8208		# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 6212			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 4476		# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6332		# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 8948			# $s3 stores the blue cross address
+		jal draw_blue_cross
+	
+		addi $s7, $zero, 4			# set the x-coordinate to 2 as original position
+		lw $ra, ($sp)
+		addi $sp, $sp, 4			# pop $ra from the stack
+		jr $ra
+
+
 # this function draws the player
 draw_player:
 	sw $t4, ($s2)
@@ -1410,8 +1599,30 @@ level_2_page:
 		addi $s1, $s1, 4			# increment graph pointer by 16
 		j level_2_page_loop8
 	level_2_page_remaining8:
-
-
+	# draw platform five
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 7768			# $s1 stores the address of graph pointer
+	level_2_page_loop9:
+		bge $s0, 15, level_2_page_remaining9	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_2_page_loop9
+	level_2_page_remaining9:
+	
+	# draw platform six
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 2144			# $s1 stores the address of graph pointer
+	level_2_page_loop10:
+		bge $s0, 10, level_2_page_remaining10	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_2_page_loop10
+	level_2_page_remaining10:
+	
+	
+	jal initialize_position_level_2               # draw original position of all objects 
 	j main_level_2
 	
 # this function launch level 3 game
@@ -1465,7 +1676,7 @@ level_3_page:
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
 	addi $s1, $t0, 8448			# $s1 stores the address of graph pointer
 	level_3_page_loop5:
-		bge $s0, 7, level_3_page_remaining5	# exit condition: $s0 >= 25
+		bge $s0, 10, level_3_page_remaining5	# exit condition: $s0 >= 25
 		sw $t1, ($s1)				# draw white line
 		addi $s0, $s0, 1			# increment index by 1
 		addi $s1, $s1, 4			# increment graph pointer by 16
@@ -1473,9 +1684,9 @@ level_3_page:
 	level_3_page_remaining5:
 	# draw platform two
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
-	addi $s1, $t0, 6452			# $s1 stores the address of graph pointer
+	addi $s1, $t0, 6440			# $s1 stores the address of graph pointer
 	level_3_page_loop6:
-		bge $s0, 7, level_3_page_remaining6	# exit condition: $s0 >= 25
+		bge $s0, 12, level_3_page_remaining6	# exit condition: $s0 >= 25
 		sw $t1, ($s1)				# draw white line
 		addi $s0, $s0, 1			# increment index by 1
 		addi $s1, $s1, 4			# increment graph pointer by 16
@@ -1511,4 +1722,28 @@ level_3_page:
 		addi $s1, $s1, 4			# increment graph pointer by 16
 		j level_3_page_loop9
 	level_3_page_remaining9:
+	# draw platform six
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 9136			# $s1 stores the address of graph pointer
+	level_3_page_loop10:
+		bge $s0, 5, level_3_page_remaining10	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop10
+	level_3_page_remaining10:
+	# draw platform seven
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	addi $s1, $t0, 	3496		# $s1 stores the address of graph pointer
+	level_3_page_loop11:
+		bge $s0, 5, level_3_page_remaining11	# exit condition: $s0 >= 25
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 16
+		j level_3_page_loop11
+	level_3_page_remaining11:
+	
+	
+	jal initialize_position_level_3               # draw original position of all objects 
 	j main_level_3
+	
