@@ -61,42 +61,94 @@
 main:
 	# load the start-up menu
 	j start_menu
-	main_level_1:
-		addi $s2, $t0, 8968			# $s2 stores the player address
-		jal draw_player
-		addi $s3, $t0, 9048			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 6488			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 6584			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 4016			# $s3 stores the coin address
-		jal draw_coin
-		addi $s3, $t0, 4080			# $s3 stores the blue cross address
-		jal draw_blue_cross
-		addi $s3, $t0, 9964			# $s3 stores the red cross address
-		jal draw_red_cross
-		
-		###############################
-		###############################
-		level_1_after_moving:
-			li $t9, 0xffff0000		# check if a key is pressed by the user
-			lw $t8, 0($t9)
-			beq $t8, 1, keypress_level_1	# jump to key detection
-			j level_1_after_moving		# no key is pressed, go back to the first line 
-		
-		keypress_level_1: 
-			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
-			beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
-			beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
-			beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
-			beq $t7, 0x71, start_menu_q_pressed		# check if key 'q' is pressed
-			j start_menu_key_detect				# no key is pressed, go back to the first line 
 	
-		############################################
-		############################################
+	main_level_1:
+
+		###############################
+		###############################
+		level_1_key_detect:
+			
+			gravity_check_level_1:
+				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+				lw $s5, ($s6)		
+				beq $s5, 0xffffff, continuation_level_1
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_1
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0xffffff, continuation_level_1
+				# player is in the air
+				# player should be pulled down to the ground
+				jal delete_player
+				addi $s2, $s2, 256
+				jal draw_player	
+				
+				li $v0, 32
+				li $a0, 100 # Wait one second (1000 milliseconds)
+				syscall
+
+
+
+
+
+			continuation_level_1:
+				li $t9, 0xffff0000		# check if a key is pressed by the user
+				lw $t8, 0($t9)
+				beq $t8, 1, keypress_level_1	# jump to key detection
+				j level_1_key_detect		# no key is pressed, go back to the first line 
 		
-		j level_1_after_moving
+			keypress_level_1: 
+
+			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
+			beq $t7, 0x64, level_1_d_pressed		# check if key 'd' is pressed
+			beq $t7, 0x61, level_1_a_pressed		# check if key 'a' is pressed
+			beq $t7, 0x77, level_1_w_pressed		# check if key 'q' is pressed
+			j level_1_key_detect				# no key is pressed, go back to the first line 
+			
+		level_1_d_pressed:
+			beq $s7, 62, level_1_key_detect			# if player already on the boundary, no action requires 
+
+			continue:
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, 4				# update the new location of the player
+			addi $s7, $s7, 1
+			jal draw_player					# draw the player at the new position
+			j level_1_key_detect
+		
+		level_1_a_pressed:
+			beq $s7, 1, level_1_key_detect			# if player already on the boundary, no action requires 
+
+			jal delete_player				# delete original player at the old position
+			addi $s2, $s2, -4				# update the new location of the player
+			addi $s7, $s7, -1
+			jal draw_player					# draw the player at the new position
+			j level_1_key_detect
+
+		level_1_w_pressed:
+			add $s6, $zero, $s2				# $s6 temporarily stores the position of player
+			addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
+			lw $s5, ($s6)		
+			beq $s5, 0xffffff, level_1_w_continue
+			addi $s6, $s6, -4
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_1_w_continue
+			addi $s6, $s6, 8
+			lw $s5, ($s6)
+			beq $s5, 0xffffff, level_1_w_continue
+			j level_1_key_detect
+			level_1_w_continue:
+				jal delete_player
+				addi $s2, $s2, -4352
+				jal draw_player
+				j level_1_key_detect
+		
+				li $v0, 32
+				li $a0, 3000 # Wait one second (1000 milliseconds)
+				syscall
+		
+		j level_1_key_detect
 		
 	main_level_2:
 		addi $s2, $t0, 9228			# $s2 stores the player address
@@ -130,10 +182,37 @@ main:
 	
 	
 	j main
-	
+
+# this function initialize the original position of all objects
+initialize_position_level_1:
+		addi $sp, $sp, -4
+		sw $ra, ($sp)				# push $ra to the stack
+		
+		addi $s2, $t0, 8968			# $s2 stores the player address
+		jal draw_player
+		addi $s3, $t0, 9048			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6488			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 6584			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 4016			# $s3 stores the coin address
+		jal draw_coin
+		addi $s3, $t0, 4080			# $s3 stores the blue cross address
+		jal draw_blue_cross
+		addi $s3, $t0, 9964			# $s3 stores the red cross address
+		jal draw_red_cross
+		addi $s7, $zero, 2			# set the x-coordinate to 2 as original position
+		
+		lw $ra, ($sp)
+		addi $sp, $sp, 4			# pop $ra from the stack
+		jr $ra
+		
 # this function draws the player
 draw_player:
 	sw $t4, ($s2)
+	sw $t4, 4($s2)
+	sw $t4, -4($s2)
 	sw $t4, -260($s2)
 	sw $t4, -516($s2)
 	sw $t1, -772($s2)
@@ -141,7 +220,19 @@ draw_player:
 	sw $t4, -508($s2)
 	sw $t1, -764($s2)
 	jr $ra
-	
+
+delete_player:
+	sw $t5, ($s2)
+	sw $t5, 4($s2)
+	sw $t5, -4($s2)
+	sw $t5, -260($s2)
+	sw $t5, -516($s2)
+	sw $t5, -772($s2)
+	sw $t5, -252($s2)
+	sw $t5, -508($s2)
+	sw $t5, -764($s2)
+	jr $ra
+
 draw_coin:
 	sw $t2, ($s3)
 	sw $t2, -256($s3)
@@ -1229,7 +1320,7 @@ level_1_page:
 		addi $s1, $s1, 4			# increment graph pointer by 16
 		j level_1_page_loop8
 	level_1_page_remaining8:
-	
+	jal initialize_position_level_1               # draw original position of all objects 
 	j main_level_1
 	
 # this function launch level 2 game
