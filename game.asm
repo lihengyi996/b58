@@ -746,6 +746,7 @@ start_menu:
 		beq $t7, 0x73, start_menu_s_pressed		# check if key 's' is pressed
 		beq $t7, 0x77, start_menu_w_pressed		# check if key 'w' is pressed
 		beq $t7, 0x0a, start_menu_enter_pressed	# check if key 'Enter' is pressed
+		beq $t7, 0x71, start_menu_q_pressed		# check if key 'q' is pressed
 		j start_menu_key_detect		# no key is pressed, go back to the first line 
 	
 	
@@ -879,9 +880,15 @@ start_menu_w_pressed:
 # this function deals with the case when Enter is pressed in start menu
 start_menu_enter_pressed:
 	beq $t6, 4, good_bye_page		# exit option is selected
+	beq $t6, 1, level_1_page		# level 1 is selected
 	j start_menu_key_detect	
 	
-	
+# this function deals with the case when q is pressed in start menu
+start_menu_q_pressed:
+	jal clear_screen		# clears the screen
+	j good_bye_page		# draw goodbye screen and terminate the program
+
+
 # this function draw goodbye page and terminates the program
 good_bye_page:
 	jal clear_screen		# clear the screen
@@ -1030,3 +1037,23 @@ clear_screen:
 		j clear_screen_for_loop
 	clear_screen_remaining:
 		jr $ra
+		
+# this function launch level 1 game
+level_1_page:
+	jal clear_screen			# clear screen content
+	# draw background
+	# draw the white line
+	addi $s0, $zero, 0			# $s0 stores the index i = 0
+	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
+	level_1_page_loop:
+		bge $s0, 64, level_1_page_remaining	# exit condition: $s0 >= 64
+		sw $t1, ($s1)				# draw white line
+		addi $s0, $s0, 1			# increment index by 1
+		addi $s1, $s1, 4			# increment graph pointer by 4
+		j level_1_page_loop
+	level_1_page_remaining:
+	# draw ocean waves
+	
+	li $v0, 10
+	syscall
+	
