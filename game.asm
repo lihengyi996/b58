@@ -71,6 +71,7 @@ main:
 			jal coin_collision_check_level_1_coin_1
 			jal coin_collision_check_level_1_coin_2
 			jal coin_collision_check_level_1_coin_3
+			jal coin_collision_check_level_1_coin_4
 			
 			gravity_check_level_1:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
@@ -641,6 +642,82 @@ coin_collision_check_level_1_coin_3:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		j coin_collision_check_level_13_rest
+
+
+
+# this function checks if the player collides with the coin 4
+coin_collision_check_level_1_coin_4:
+
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 4016			# collide with coin one
+	lw $s5, ($s3)
+	beq $s5, $t2, go_on_14			# color is still yellow
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_14:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_4
+
+	coin_collision_check_level_14_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_coin_4:
+		addi $s3, $t0, 4016
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -768($s3)
+		sw $t5, -516($s3)
+		sw $t5, -508($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+		j coin_collision_check_level_14_rest
+
 
 
 
