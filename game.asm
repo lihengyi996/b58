@@ -72,6 +72,8 @@ main:
 			jal coin_collision_check_level_1_coin_2
 			jal coin_collision_check_level_1_coin_3
 			jal coin_collision_check_level_1_coin_4
+			jal red_cross_collision_check_level_1
+			jal grey_cross_collision_check_level_1
 			
 			gravity_check_level_1:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
@@ -197,6 +199,8 @@ main:
 			jal coin_collision_check_level_2_coin_2
 			jal coin_collision_check_level_2_coin_3
 			jal coin_collision_check_level_2_coin_4
+			jal red_cross_collision_check_level_2
+			jal grey_cross_collision_check_level_2
 			
 			gravity_check_level_2:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
@@ -319,11 +323,13 @@ main:
 	main_level_3:
 			level_3_key_detect:
 			
-			###############################################
 			jal coin_collision_check_level_3_coin_1
 			jal coin_collision_check_level_3_coin_2
 			jal coin_collision_check_level_3_coin_3
-			###############################################
+			jal red_cross_collision_check_level_3
+			jal grey_cross_collision_check_level_3
+
+
 			gravity_check_level_3:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
 				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
@@ -731,6 +737,129 @@ coin_collision_check_level_1_coin_4:
 		j coin_collision_check_level_14_rest
 
 
+red_cross_collision_check_level_1:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 	9964			# collide with red cross
+	lw $s5, ($s3)
+	beq $s5, $t4, go_on_111			# color is still red
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_111:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_red_cross
+
+	red_cross_collision_check_level_111_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_red_cross:
+		addi $s3, $t0, 9964
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+
+		j red_cross_collision_check_level_111_rest
+
+
+
+grey_cross_collision_check_level_1:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 	4080			# collide with grey cross
+	addi $s3, $s3, -256
+	lw $s5, ($s3)
+	beq $s5, 0xb6b6b6, go_on_1111		# color is still grey
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_1111:
+	addi $s3, $s3, 248			
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_grey_cross
+
+	grey_cross_collision_check_level_1111_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_grey_cross:
+		addi $s3, $t0, 4084
+		sw $t5, ($s3)
+		sw $t5, -512($s3)
+		sw $t5, -8($s3)
+		sw $t5, -520($s3)
+		sw $t5, -260($s3)
+
+		j grey_cross_collision_check_level_1111_rest
+		
+		
+#########################level 2##################################3
 # this function checks if the player collides with the coin 1
 coin_collision_check_level_2_coin_1:
 
@@ -1028,6 +1157,129 @@ coin_collision_check_level_2_coin_4:
 		j coin_collision_check_level_24_rest
 
 
+red_cross_collision_check_level_2:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 	2488			# collide with red cross
+	lw $s5, ($s3)
+	beq $s5, $t4, go_on_222		# color is still red
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_222:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_red_cross
+
+	red_cross_collision_check_level_222_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_2_delete_red_cross:
+		addi $s3, $t0, 2488
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+
+		j red_cross_collision_check_level_222_rest
+
+
+grey_cross_collision_check_level_2:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 	5832			# collide with grey cross
+	addi $s3, $s3, -256
+	lw $s5, ($s3)
+	beq $s5, 0xb6b6b6, go_on_2222		# color is still grey
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_2222:
+	addi $s3, $s3, 248			
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_2_delete_grey_cross
+
+	grey_cross_collision_check_level_2222_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_2_delete_grey_cross:
+		addi $s3, $t0, 5828
+		sw $t5, ($s3)
+		sw $t5, -512($s3)
+		sw $t5, 8($s3)
+		sw $t5, -252($s3)
+		sw $t5, -504($s3)
+
+		j grey_cross_collision_check_level_2222_rest
+		
+
+
+###############################level 3####################################
 coin_collision_check_level_3_coin_1:
 
 	addi $sp, $sp, -4
@@ -1248,7 +1500,127 @@ coin_collision_check_level_3_coin_3:
 		sw $t5, -252($s3)
 		j coin_collision_check_level_33_rest
 
+red_cross_collision_check_level_3:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
 
+	addi $s3, $t0, 	3252			# collide with red cross
+	lw $s5, ($s3)
+	beq $s5, $t4, go_on_333			# color is still red
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_333:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_red_cross
+
+	red_cross_collision_check_level_333_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_3_delete_red_cross:
+		addi $s3, $t0, 3252
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+
+		j red_cross_collision_check_level_333_rest
+		
+		
+grey_cross_collision_check_level_3:
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 	8948			# collide with grey cross
+	addi $s3, $s3, -256
+	lw $s5, ($s3)
+	beq $s5, 0xb6b6b6, go_on_3333		# color is still grey
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_3333:
+	addi $s3, $s3, 248			
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_3_delete_grey_cross
+
+	grey_cross_collision_check_level_3333_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_3_delete_grey_cross:
+		addi $s3, $t0, 8944
+		sw $t5, ($s3)
+		sw $t5, -512($s3)
+		sw $t5, 8($s3)
+		sw $t5, -252($s3)
+		sw $t5, -504($s3)
+
+		j grey_cross_collision_check_level_3333_rest
+		
+##################################drawing functions##############################################
 # this function initialize the original position of all objects
 initialize_position_level_1:
 		addi $sp, $sp, -4
@@ -1314,6 +1686,8 @@ initialize_position_level_3:
 		jal draw_coin
 		addi $s3, $t0, 8948			# $s3 stores the grey cross address
 		jal draw_grey_cross
+		addi $s3, $t0, 3252			# $s3 stores the red cross address
+		jal draw_red_cross
 	
 		addi $s7, $zero, 4			# set the x-coordinate to 2 as original position
 		lw $ra, ($sp)
@@ -1323,14 +1697,15 @@ initialize_position_level_3:
 
 # this function draws the player
 draw_player:
-	sw $t4, ($s2)
-	sw $t4, 4($s2)
-	sw $t4, -4($s2)
-	sw $t4, -260($s2)
-	sw $t4, -516($s2)
+	addi $t6, $zero, 0xed1c25			# $t6 stores the color red which is a bit different than the color red for red cross							
+	sw $t6, ($s2)
+	sw $t6, 4($s2)
+	sw $t6, -4($s2)
+	sw $t6, -260($s2)
+	sw $t6, -516($s2)
 	sw $t1, -772($s2)
-	sw $t4, -252($s2)
-	sw $t4, -508($s2)
+	sw $t6, -252($s2)
+	sw $t6, -508($s2)
 	sw $t1, -764($s2)
 	jr $ra
 
