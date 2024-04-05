@@ -101,7 +101,9 @@ main:
 			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
 			beq $t7, 0x64, level_1_d_pressed		# check if key 'd' is pressed
 			beq $t7, 0x61, level_1_a_pressed		# check if key 'a' is pressed
-			beq $t7, 0x77, level_1_w_pressed		# check if key 'q' is pressed
+			beq $t7, 0x77, level_1_w_pressed		# check if key 'w' is pressed
+			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
+			beq $t7, 0x72, level_1_page			# check if key 'r' is pressed
 			j level_1_key_detect				# no key is pressed, go back to the first line 
 			
 		level_1_d_pressed:
@@ -220,6 +222,8 @@ main:
 			beq $t7, 0x64, level_2_d_pressed		# check if key 'd' is pressed
 			beq $t7, 0x61, level_2_a_pressed		# check if key 'a' is pressed
 			beq $t7, 0x77, level_2_w_pressed		# check if key 'q' is pressed
+			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
+			beq $t7, 0x72, level_2_page			# check if key 'r' is pressed
 			j level_2_key_detect				# no key is pressed, go back to the first line 
 			
 		level_2_d_pressed:
@@ -333,6 +337,8 @@ main:
 			beq $t7, 0x64, level_3_d_pressed		# check if key 'd' is pressed
 			beq $t7, 0x61, level_3_a_pressed		# check if key 'a' is pressed
 			beq $t7, 0x77, level_3_w_pressed		# check if key 'q' is pressed
+			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
+			beq $t7, 0x72, level_3_page			# check if key 'r' is pressed
 			j level_3_key_detect				# no key is pressed, go back to the first line 
 			
 		level_3_d_pressed:
@@ -1595,7 +1601,103 @@ good_bye_page:
 	sw $t1, 12416($t0)
 	sw $t1, 12420($t0)
 	sw $t1, 12424($t0)
+	# draw 'O'
+	sw $t1, 13692($t0)
+	sw $t1, 13948($t0)
+	sw $t1, 14204($t0)
+	sw $t1, 14460($t0)
+	sw $t1, 14716($t0)
+	sw $t1, 14972($t0)
+	sw $t1, 15228($t0)
+	sw $t1, 15232($t0)
+	sw $t1, 15236($t0)
+	sw $t1, 15240($t0)
+	sw $t1, 15244($t0)
+	sw $t1, 15248($t0)
+	sw $t1, 15252($t0)
+	sw $t1, 14996($t0)
+	sw $t1, 14740($t0)
+	sw $t1, 14484($t0)
+	sw $t1, 14228($t0)
+	sw $t1, 13972($t0)
+	sw $t1, 13716($t0)
+	sw $t1, 13712($t0)
+	sw $t1, 13708($t0)
+	sw $t1, 13704($t0)
+	sw $t1, 13700($t0)
+	sw $t1, 13696($t0)
 	
+	# draw 'V'
+	sw $t1, 13724($t0)
+	sw $t1, 13980($t0)
+	sw $t1, 14236($t0)
+	sw $t1, 14492($t0)
+	sw $t1, 14748($t0)
+	sw $t1, 14752($t0)
+	sw $t1, 15008($t0)
+	sw $t1, 15012($t0)
+	sw $t1, 15268($t0)
+	sw $t1, 15016($t0)
+	sw $t1, 14760($t0)
+	sw $t1, 14764($t0)
+	sw $t1, 14508($t0)
+	sw $t1, 14252($t0)
+	sw $t1, 13996($t0)
+	sw $t1, 13740($t0)
+	
+	# draw 'E'
+	sw $t1, 13748($t0)
+	sw $t1, 13752($t0)
+	sw $t1, 13756($t0)
+	sw $t1, 13760($t0)
+	sw $t1, 13764($t0)
+	sw $t1, 13768($t0)
+	sw $t1, 14004($t0)
+	sw $t1, 14260($t0)
+	sw $t1, 14516($t0)
+	sw $t1, 14772($t0)
+	sw $t1, 14776($t0)
+	sw $t1, 14780($t0)
+	sw $t1, 14784($t0)
+	sw $t1, 14788($t0)
+	sw $t1, 14792($t0)
+	sw $t1, 15028($t0)
+	sw $t1, 15284($t0)
+	sw $t1, 15288($t0)
+	sw $t1, 15292($t0)
+	sw $t1, 15296($t0)
+	sw $t1, 15300($t0)
+	sw $t1, 15304($t0)
+	
+	# draw 'R'
+	sw $t1, 13776($t0)
+	sw $t1, 14032($t0)
+	sw $t1, 14288($t0)
+	sw $t1, 14544($t0)
+	sw $t1, 14800($t0)
+	sw $t1, 15056($t0)
+	sw $t1, 15312($t0)
+	sw $t1, 13780($t0)
+	sw $t1, 13784($t0)
+	sw $t1, 13788($t0)
+	sw $t1, 13792($t0)
+	sw $t1, 14052($t0)
+	sw $t1, 14308($t0)
+	sw $t1, 14564($t0)
+	sw $t1, 14816($t0)
+	sw $t1, 14812($t0)
+	sw $t1, 14808($t0)
+	sw $t1, 14804($t0)
+	sw $t1, 15076($t0)
+	sw $t1, 15332($t0)
+	
+	# draw '!'
+	sw $t1, 13808($t0)
+	sw $t1, 14064($t0)
+	sw $t1, 14320($t0)
+	sw $t1, 14576($t0)
+	sw $t1, 14832($t0)
+	sw $t1, 15344($t0)
 	
 	li $v0, 10
 	syscall				# the game is terminated by clicking on quit
