@@ -86,6 +86,27 @@ main:
 				addi $s6, $s6, 8
 				lw $s5, ($s6)
 				beq $s5, 0xffffff, continuation_level_1
+				
+				add $s6, $zero, $s2
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is blue a.k.a. is an ocean
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_1
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_1
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_1
+				addi $s6, $s6, 256				
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_1
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_1
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_1
+
 				# player is in the air
 				# player should be pulled down to the ground
 				jal delete_player
@@ -188,6 +209,14 @@ main:
 		
 		j level_1_key_detect
 		
+		fallToOcean_1:
+			jal delete_player
+			addi $s2, $t0, 8968
+			addi $s7, $zero, 2
+			jal draw_player
+			j level_1_key_detect
+		
+		
 	main_level_2:
 		
 		
@@ -202,6 +231,9 @@ main:
 			jal red_cross_collision_check_level_2
 			jal grey_cross_collision_check_level_2
 			
+			
+			
+			
 			gravity_check_level_2:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
 				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
@@ -213,6 +245,29 @@ main:
 				addi $s6, $s6, 8
 				lw $s5, ($s6)
 				beq $s5, 0xffffff, continuation_level_2
+				
+				
+				
+				add $s6, $zero, $s2
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is blue a.k.a. is an ocean
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_2
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_2
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_2
+				addi $s6, $s6, 256				
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_2
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_2
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_2
+
 				# player is in the air
 				# player should be pulled down to the ground
 				jal delete_player
@@ -313,10 +368,15 @@ main:
 			syscall
 		
 		j level_2_key_detect
+			
 		
 		
-		
-		
+		fallToOcean_2:
+			jal delete_player
+			addi $s2, $t0, 9228
+			addi $s7, $zero, 3
+			jal draw_player
+			j level_2_key_detect
 		
 		
 	
@@ -341,6 +401,29 @@ main:
 				addi $s6, $s6, 8
 				lw $s5, ($s6)
 				beq $s5, 0xffffff, continuation_level_3
+				
+				
+				add $s6, $zero, $s2
+				addi $s6, $s6, 256				# following code checks if the pixel right blow the player is blue a.k.a. is an ocean
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_3
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_3
+				addi $s6, $s6, 8
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_3
+				addi $s6, $s6, 256				
+				lw $s5, ($s6)		
+				beq $s5, 0x4d6df3, fallToOcean_3
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_3
+				addi $s6, $s6, -4
+				lw $s5, ($s6)
+				beq $s5, 0x4d6df3, fallToOcean_3
+				
+				
 				# player is in the air
 				# player should be pulled down to the ground
 				jal delete_player
@@ -438,6 +521,13 @@ main:
 			syscall
 		
 		j level_3_key_detect
+		
+		fallToOcean_3:
+			jal delete_player
+			addi $s2, $t0, 8208
+			addi $s7, $zero, 4
+			jal draw_player
+			j level_3_key_detect
 	j main
 
 # this function checks if the player collides with the coin 1
@@ -1751,6 +1841,9 @@ draw_red_cross:
 
 # this function initializes the start menu page
 start_menu:
+	
+	addi $a3, $zero, 3			# initialize the orginal health to 3
+	
 	jal clear_screen	# clear the screen first before drawing
 	
 	# draw the first line "COIN"
@@ -2927,6 +3020,12 @@ clear_screen:
 level_1_page:
 	jal clear_screen			# clear screen content
 	# draw background
+	
+	
+	# draw HP
+	jal draw_HP
+
+	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
 	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
@@ -3017,6 +3116,10 @@ level_1_page:
 level_2_page:
 	jal clear_screen			# clear screen content
 	# draw background
+	
+	# draw HP
+	jal draw_HP
+	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
 	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
@@ -3130,6 +3233,10 @@ level_2_page:
 level_3_page:
 	jal clear_screen			# clear screen content
 	# draw background
+	
+	# draw HP
+	jal draw_HP
+	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
 	add $s1, $t0, 12544			# $s1 stores the address of graph pointer
@@ -3247,4 +3354,152 @@ level_3_page:
 	
 	jal initialize_position_level_3               # draw original position of all objects 
 	j main_level_3
+
+# this function draws the player's HP
+draw_HP:
+
+	hp_case1:
+		bge, $a3, 1, heartdrawing1
+	hp_case2:
+		bge, $a3, 2, heartdrawing2
+	hp_case3:
+		bge, $a3, 3, heartdrawing3
+	hp_case4:
+		bge, $a3, 4, heartdrawing4
+	hp_case5:
+		bge, $a3, 5, heartdrawing5
+	hp_case6:
+		jr $ra
 	
+	heartdrawing1:
+		add, $s3, $t0, 15124
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case2
+
+	heartdrawing2:
+		add, $s3, $t0, 15160
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case3
+
+	heartdrawing3:
+		add, $s3, $t0, 15196
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case4
+		
+	heartdrawing4:
+		add, $s3, $t0, 15232
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case5
+		
+	heartdrawing5:
+		add, $s3, $t0, 15268
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case6
+	
+# this function deletes all the HPs	
+clear_all_HP:
+	addi $t6, $zero, 13056				# $t6 stores the index i = 0
+	addi $s3, $t0, 13056				# $s3 stores the address of graph pointer
+	clear_allHP_for_loop:
+		bgt $t6, 16380, clear_allHP_remaining		# exit condition index i > 16380
+		sw $t5, ($s3)					# clear one pixel to black color
+		addi $s3, $s3, 4				# increment address of graph pointer by 4
+		addi $t6, $t6, 4				# increment index i by 4
+		j clear_allHP_for_loop
+	clear_allHP_remaining:
+		jr $ra
