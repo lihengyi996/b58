@@ -63,7 +63,14 @@ main:
 	j start_menu
 	
 	main_level_1:
+	
+		
+		
 		level_1_key_detect:
+			
+			jal coin_collision_check_level_1_coin_1
+			jal coin_collision_check_level_1_coin_2
+			jal coin_collision_check_level_1_coin_3
 			
 			gravity_check_level_1:
 				add $s6, $zero, $s2				# $s6 temporarily stores the position of player
@@ -85,10 +92,7 @@ main:
 				li $v0, 32
 				li $a0, 100 # Wait one second (1000 milliseconds)
 				syscall
-
-
-
-
+				
 
 			continuation_level_1:
 				li $t9, 0xffff0000		# check if a key is pressed by the user
@@ -122,8 +126,9 @@ main:
 			addi $s0, $s0, -256
 			lw $s6, ($s0)
 			beq $s6, 0xffffff, level_1_key_detect
-	
+			
 
+			level_1_p_pressed_rest:
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, 4				# update the new location of the player
 			addi $s7, $s7, 1
@@ -160,6 +165,7 @@ main:
 			addi $s6, $s6, 256				# following code checks if the pixel right blow the player is white a.k.a. is a platform
 			lw $s5, ($s6)		
 			beq $s5, 0xffffff, level_1_w_continue
+			
 			addi $s6, $s6, -4
 			lw $s5, ($s6)
 			beq $s5, 0xffffff, level_1_w_continue
@@ -413,9 +419,230 @@ main:
 			syscall
 		
 		j level_3_key_detect
-	
-	
 	j main
+
+# this function checks if the player collides with the coin 1
+coin_collision_check_level_1_coin_1:
+
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 9048			# collide with coin one
+	lw $s5, ($s3)
+	beq $s5, $t2, go_on_11			# color is still yellow
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_11:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_1
+
+	coin_collision_check_level_11_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_coin_1:
+		addi $s3, $t0, 9048
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -768($s3)
+		sw $t5, -516($s3)
+		sw $t5, -508($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+		j coin_collision_check_level_11_rest
+	
+	
+# this function checks if the player collides with the coin 2
+coin_collision_check_level_1_coin_2:
+
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 6488			# collide with coin one
+	lw $s5, ($s3)
+	beq $s5, $t2, go_on_12			# color is still yellow
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_12:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_2
+
+	coin_collision_check_level_12_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_coin_2:
+		addi $s3, $t0, 6488
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -768($s3)
+		sw $t5, -516($s3)
+		sw $t5, -508($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+		j coin_collision_check_level_12_rest
+		
+		
+# this function checks if the player collides with the coin 3
+coin_collision_check_level_1_coin_3:
+
+	addi $sp, $sp, -4
+	sw $ra, ($sp)				# push $ra to the stack
+
+	addi $s3, $t0, 6584			# collide with coin one
+	lw $s5, ($s3)
+	beq $s5, $t2, go_on_13			# color is still yellow
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	go_on_13:
+	addi $s3, $s3, -8			
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, 4
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+	addi $s3, $s3, -256
+	beq $s2, $s3, level_1_delete_coin_3
+
+	coin_collision_check_level_13_rest:
+	jal draw_player
+	lw $ra, ($sp)
+	addi $sp, $sp, 4			# pop $ra from the stack
+	jr $ra
+	
+	level_1_delete_coin_3:
+		addi $s3, $t0, 6584
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -768($s3)
+		sw $t5, -516($s3)
+		sw $t5, -508($s3)
+		sw $t5, -260($s3)
+		sw $t5, -252($s3)
+		j coin_collision_check_level_13_rest
+
+
 
 # this function initialize the original position of all objects
 initialize_position_level_1:
@@ -519,10 +746,10 @@ draw_coin:
 	sw $t2, -256($s3)
 	sw $t2, -512($s3)
 	sw $t2, -768($s3)
-	sw $t2, -252($s3)
-	sw $t2, -260($s3)
-	sw $t2, -508($s3)
 	sw $t2, -516($s3)
+	sw $t2, -508($s3)
+	sw $t2, -260($s3)
+	sw $t2, -252($s3)
 	jr $ra
 
 draw_grey_cross:
