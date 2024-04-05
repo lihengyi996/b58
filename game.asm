@@ -63,9 +63,6 @@ main:
 	j start_menu
 	
 	main_level_1:
-
-		###############################
-		###############################
 		level_1_key_detect:
 			
 			gravity_check_level_1:
@@ -110,6 +107,21 @@ main:
 		level_1_d_pressed:
 			beq $s7, 62, level_1_key_detect			# if player already on the boundary, no action requires 
 
+			addi $s0, $s2, 0				# check if there is a platform on the right
+			addi $s0, $s0, 8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+	
+
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, 4				# update the new location of the player
 			addi $s7, $s7, 1
@@ -118,6 +130,22 @@ main:
 		
 		level_1_a_pressed:
 			beq $s7, 1, level_1_key_detect			# if player already on the boundary, no action requires 
+
+
+			addi $s0, $s2, 0				# check if there is a platform on the left
+			addi $s0, $s0, -8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_1_key_detect
+	
 
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, -4				# update the new location of the player
@@ -197,7 +225,20 @@ main:
 		level_2_d_pressed:
 			beq $s7, 62, level_2_key_detect			# if player already on the boundary, no action requires 
 
-
+			addi $s0, $s2, 0				# check if there is a platform on the right
+			addi $s0, $s0, 8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, 4				# update the new location of the player
 			addi $s7, $s7, 1
@@ -206,6 +247,21 @@ main:
 		
 		level_2_a_pressed:
 			beq $s7, 1, level_2_key_detect			# if player already on the boundary, no action requires 
+
+			addi $s0, $s2, 0				# check if there is a platform on the left
+			addi $s0, $s0, -8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_2_key_detect
+	
 
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, -4				# update the new location of the player
@@ -283,6 +339,21 @@ main:
 			beq $s7, 62, level_3_key_detect			# if player already on the boundary, no action requires 
 
 
+			addi $s0, $s2, 0				# check if there is a platform on the right
+			addi $s0, $s0, 8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+
+
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, 4				# update the new location of the player
 			addi $s7, $s7, 1
@@ -291,6 +362,21 @@ main:
 		
 		level_3_a_pressed:
 			beq $s7, 1, level_3_key_detect			# if player already on the boundary, no action requires 
+
+			addi $s0, $s2, 0				# check if there is a platform on the left
+			addi $s0, $s0, -8
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+			addi $s0, $s0, -256
+			lw $s6, ($s0)
+			beq $s6, 0xffffff, level_3_key_detect
+	
 
 			jal delete_player				# delete original player at the old position
 			addi $s2, $s2, -4				# update the new location of the player
@@ -340,8 +426,8 @@ initialize_position_level_1:
 		jal draw_coin
 		addi $s3, $t0, 4016			# $s3 stores the coin address
 		jal draw_coin
-		addi $s3, $t0, 4080			# $s3 stores the blue cross address
-		jal draw_blue_cross
+		addi $s3, $t0, 4080			# $s3 stores the grey cross address
+		jal draw_grey_cross
 		addi $s3, $t0, 9964			# $s3 stores the red cross address
 		jal draw_red_cross
 		addi $s7, $zero, 2			# set the x-coordinate to 2 as original position
@@ -367,8 +453,8 @@ initialize_position_level_2:
 		jal draw_coin
 		addi $s3, $t0, 2488			# $s3 stores the red cross address
 		jal draw_red_cross
-		addi $s3, $t0, 5832			# $s3 stores the blue cross address
-		jal draw_blue_cross
+		addi $s3, $t0, 5832			# $s3 stores the grey cross address
+		jal draw_grey_cross
 		
 		addi $s7, $zero, 3			# set the x-coordinate to 2 as original position
 		lw $ra, ($sp)
@@ -388,8 +474,8 @@ initialize_position_level_3:
 		jal draw_coin
 		addi $s3, $t0, 6332		# $s3 stores the coin address
 		jal draw_coin
-		addi $s3, $t0, 8948			# $s3 stores the blue cross address
-		jal draw_blue_cross
+		addi $s3, $t0, 8948			# $s3 stores the grey cross address
+		jal draw_grey_cross
 	
 		addi $s7, $zero, 4			# set the x-coordinate to 2 as original position
 		lw $ra, ($sp)
@@ -433,12 +519,13 @@ draw_coin:
 	sw $t2, -516($s3)
 	jr $ra
 
-draw_blue_cross:
-	sw $t3, -256($s3)
-	sw $t3, -4($s3)
-	sw $t3, 4($s3)
-	sw $t3, -516($s3)
-	sw $t3, -508($s3)
+draw_grey_cross:
+	addi $t6, $zero, 0xb6b6b6
+	sw $t6, -256($s3)
+	sw $t6, -4($s3)
+	sw $t6, 4($s3)
+	sw $t6, -516($s3)
+	sw $t6, -508($s3)
 	jr $ra
 	
 draw_red_cross:
