@@ -28,11 +28,10 @@
 # All of Them
 #
 # Link to video demonstration for final submission:
-# - (insert YouTube / MyMedia / other URL here). Make sure we can view it!
+# - https://youtu.be/cBqwCcg4yso
 #
 # Are you OK with us sharing the video with people outside course staff?
 # - yes
-# - To be updated......
 #
 # Any additional information that the TA needs to know:
 # Nothing specific and hope you enjoy the game
