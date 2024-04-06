@@ -636,6 +636,8 @@ coin_collision_check_level_1_coin_1:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
 		j coin_collision_check_level_11_rest
 	
 	
@@ -711,6 +713,8 @@ coin_collision_check_level_1_coin_2:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
 		j coin_collision_check_level_12_rest
 		
 		
@@ -786,6 +790,8 @@ coin_collision_check_level_1_coin_3:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
 		j coin_collision_check_level_13_rest
 
 
@@ -862,6 +868,8 @@ coin_collision_check_level_1_coin_4:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
 		j coin_collision_check_level_14_rest
 
 
@@ -987,9 +995,9 @@ grey_cross_collision_check_level_1:
 		sw $t5, -520($s3)
 		sw $t5, -260($s3)
 		
-		addi $a3, $a3, -1
-		jal clear_all_HP
-		jal draw_HP
+		addi $s7, $zero, 31		# player will render to a new position
+		jal delete_player
+		addi $s2, $t0, 892
 
 		j grey_cross_collision_check_level_1111_rest
 		
@@ -1067,6 +1075,9 @@ coin_collision_check_level_2_coin_1:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_21_rest
 	
 	
@@ -1142,6 +1153,9 @@ coin_collision_check_level_2_coin_2:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_22_rest
 		
 		
@@ -1217,6 +1231,9 @@ coin_collision_check_level_2_coin_3:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_23_rest
 
 
@@ -1293,6 +1310,9 @@ coin_collision_check_level_2_coin_4:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		add $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_24_rest
 
 
@@ -1416,9 +1436,9 @@ grey_cross_collision_check_level_2:
 		sw $t5, -252($s3)
 		sw $t5, -504($s3)
 		
-		addi $a3, $a3, -1
-		jal clear_all_HP
-		jal draw_HP
+		addi $s7, $zero, 31		# player will render to a new position
+		jal delete_player
+		addi $s2, $t0, 892
 
 		j grey_cross_collision_check_level_2222_rest
 		
@@ -1496,6 +1516,9 @@ coin_collision_check_level_3_coin_1:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		addi $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_31_rest
 	
 	
@@ -1571,6 +1594,9 @@ coin_collision_check_level_3_coin_2:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		addi $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_32_rest
 		
 		
@@ -1646,6 +1672,9 @@ coin_collision_check_level_3_coin_3:
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
 		addi $a1, $a1, -1
+		jal delete_score
+		jal draw_score
+
 		j coin_collision_check_level_33_rest
 
 red_cross_collision_check_level_3:
@@ -1768,9 +1797,10 @@ grey_cross_collision_check_level_3:
 		sw $t5, -252($s3)
 		sw $t5, -504($s3)
 	
-		addi $a3, $a3, -1
-		jal clear_all_HP
-		jal draw_HP
+		addi $s7, $zero, 31		# player will render to a new position
+		jal delete_player
+		addi $s2, $t0, 892
+
 	
 		j grey_cross_collision_check_level_3333_rest
 		
@@ -3090,6 +3120,8 @@ level_1_page:
 	jal draw_HP
 	# set the number of coin to 4
 	addi $a1, $zero, 4
+	jal delete_score
+	jal draw_score
 
 	
 	# draw the white line
@@ -3187,6 +3219,8 @@ level_2_page:
 	jal draw_HP
 	# set the number of coin to 4
 	addi $a1, $zero, 4
+	jal delete_score
+	jal draw_score
 	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
@@ -3306,6 +3340,8 @@ level_3_page:
 	jal draw_HP
 	# set the number of coin to 4
 	addi $a1, $zero, 3
+	jal delete_score
+	jal draw_score
 	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
@@ -3589,15 +3625,139 @@ draw_HP:
 	
 # this function deletes all the HPs	
 clear_all_HP:
-	addi $t6, $zero, 13056				# $t6 stores the index i = 0
-	addi $s3, $t0, 13056				# $s3 stores the address of graph pointer
-	clear_allHP_for_loop:
-		bgt $t6, 16380, clear_allHP_remaining		# exit condition index i > 16380
-		sw $t5, ($s3)					# clear one pixel to black color
-		addi $s3, $s3, 4				# increment address of graph pointer by 4
-		addi $t6, $t6, 4				# increment index i by 4
-		j clear_allHP_for_loop
-	clear_allHP_remaining:
+		add, $s3, $t0, 15124
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+
+		add, $s3, $t0, 15160
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+
+		add, $s3, $t0, 15196
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+
+		add, $s3, $t0, 15232
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+
+		add, $s3, $t0, 15268
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+
+
+		add, $s3, $t0, 15304
+		sw $t5, ($s3)
+		sw $t5, -256($s3)
+		sw $t5, -512($s3)
+		sw $t5, -252($s3)
+		sw $t5, -508($s3)
+		sw $t5, -764($s3)
+		sw $t5, -1020($s3)
+		sw $t5, -260($s3)
+		sw $t5, -516($s3)
+		sw $t5, -772($s3)
+		sw $t5, -1028($s3)
+		sw $t5, -520($s3)
+		sw $t5, -776($s3)
+		sw $t5, -1032($s3)
+		sw $t5, -504($s3)
+		sw $t5, -760($s3)
+		sw $t5, -1016($s3)
+		sw $t5, -780($s3)
+		sw $t5, -756($s3)
+		sw $t5, -768($s3)
+		
 		jr $ra
 		
 # this function draws the winning page
@@ -3744,3 +3904,87 @@ winning_page:
 	
 	li $v0, 10
 	syscall					# properly terminates the program
+
+draw_score:
+	score_case1:
+		bge, $a1, 1, scoredrawing1
+	score_case2:
+		bge, $a1, 2, scoredrawing2
+	score_case3:
+		bge, $a1, 3, scoredrawing3
+	score_case4:
+		bge, $a1, 4, scoredrawing4
+	score_case5:
+		jr $ra
+	
+	scoredrawing1:
+		sw $t2, 13816($t0)
+		sw $t2, 14072($t0)
+		sw $t2, 14328($t0)
+		sw $t2, 14584($t0)
+		sw $t2, 14840($t0)
+		sw $t2, 15096($t0)
+		sw $t2, 15352($t0)
+		j score_case2
+		
+	scoredrawing2:
+		sw $t2, 13808($t0)
+		sw $t2, 14064($t0)
+		sw $t2, 14320($t0)
+		sw $t2, 14576($t0)
+		sw $t2, 14832($t0)
+		sw $t2, 15088($t0)
+		sw $t2, 15344($t0)
+		j score_case3
+		
+	scoredrawing3:
+		sw $t2, 13800($t0)
+		sw $t2, 14056($t0)
+		sw $t2, 14312($t0)
+		sw $t2, 14568($t0)
+		sw $t2, 14824($t0)
+		sw $t2, 15080($t0)
+		sw $t2, 15336($t0)
+		j score_case4
+		
+	scoredrawing4:
+		sw $t2, 13792($t0)
+		sw $t2, 14048($t0)
+		sw $t2, 14304($t0)
+		sw $t2, 14560($t0)
+		sw $t2, 14816($t0)
+		sw $t2, 15072($t0)
+		sw $t2, 15328($t0)
+		j score_case5
+		
+
+delete_score:
+		sw $t5, 13816($t0)
+		sw $t5, 14072($t0)
+		sw $t5, 14328($t0)
+		sw $t5, 14584($t0)
+		sw $t5, 14840($t0)
+		sw $t5, 15096($t0)
+		sw $t5, 15352($t0)
+		sw $t5, 13808($t0)
+		sw $t5, 14064($t0)
+		sw $t5, 14320($t0)
+		sw $t5, 14576($t0)
+		sw $t5, 14832($t0)
+		sw $t5, 15088($t0)
+		sw $t5, 15344($t0)
+		sw $t5, 13800($t0)
+		sw $t5, 14056($t0)
+		sw $t5, 14312($t0)
+		sw $t5, 14568($t0)
+		sw $t5, 14824($t0)
+		sw $t5, 15080($t0)
+		sw $t5, 15336($t0)
+		sw $t5, 13792($t0)
+		sw $t5, 14048($t0)
+		sw $t5, 14304($t0)
+		sw $t5, 14560($t0)
+		sw $t5, 14816($t0)
+		sw $t5, 15072($t0)
+		sw $t5, 15328($t0)
+		jr $ra
