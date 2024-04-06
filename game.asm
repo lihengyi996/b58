@@ -67,7 +67,9 @@ main:
 		
 		
 		level_1_key_detect:
-			
+		
+			beq $a3, 0, good_bye_page				# check if HP is zero, then game is over
+			beq $a1, 0, level_2_page				# check if player collects all the coins
 			jal coin_collision_check_level_1_coin_1
 			jal coin_collision_check_level_1_coin_2
 			jal coin_collision_check_level_1_coin_3
@@ -123,7 +125,13 @@ main:
 				lw $t8, 0($t9)
 				beq $t8, 1, keypress_level_1	# jump to key detection
 				j level_1_key_detect		# no key is pressed, go back to the first line 
-		
+			
+			r_key_press_level_1:
+				addi $a3, $zero, 3		# reset player HP
+				jal clear_all_HP
+				jal draw_HP
+				j level_1_page
+			
 			keypress_level_1: 
 
 			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
@@ -131,7 +139,7 @@ main:
 			beq $t7, 0x61, level_1_a_pressed		# check if key 'a' is pressed
 			beq $t7, 0x77, level_1_w_pressed		# check if key 'w' is pressed
 			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
-			beq $t7, 0x72, level_1_page			# check if key 'r' is pressed
+			beq $t7, 0x72, r_key_press_level_1		# check if key 'r' is pressed
 			j level_1_key_detect				# no key is pressed, go back to the first line 
 			
 		level_1_d_pressed:
@@ -211,8 +219,11 @@ main:
 		
 		fallToOcean_1:
 			jal delete_player
-			addi $s2, $t0, 8968
+			addi $s2, $t0, 8968			# reset the player position
 			addi $s7, $zero, 2
+			addi $a3, $a3, -1			# HP is decreased by one
+			jal clear_all_HP			# update the new HP
+			jal draw_HP
 			jal draw_player
 			j level_1_key_detect
 		
@@ -223,6 +234,8 @@ main:
 		
 			level_2_key_detect:
 			
+			beq $a3, 0, good_bye_page				# check if HP is zero, then game is over
+			beq $a1, 0, level_3_page				# check if player collects all the coins
 			
 			jal coin_collision_check_level_2_coin_1
 			jal coin_collision_check_level_2_coin_2
@@ -288,6 +301,12 @@ main:
 				beq $t8, 1, keypress_level_2	# jump to key detection
 				j level_2_key_detect		# no key is pressed, go back to the first line 
 		
+			r_key_press_level_2:
+				addi $a3, $zero, 3		# reset player HP
+				jal clear_all_HP
+				jal draw_HP
+				j level_2_page
+		
 			keypress_level_2: 
 
 			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
@@ -295,7 +314,7 @@ main:
 			beq $t7, 0x61, level_2_a_pressed		# check if key 'a' is pressed
 			beq $t7, 0x77, level_2_w_pressed		# check if key 'q' is pressed
 			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
-			beq $t7, 0x72, level_2_page			# check if key 'r' is pressed
+			beq $t7, 0x72, r_key_press_level_2			# check if key 'r' is pressed
 			j level_2_key_detect				# no key is pressed, go back to the first line 
 			
 		level_2_d_pressed:
@@ -373,8 +392,11 @@ main:
 		
 		fallToOcean_2:
 			jal delete_player
-			addi $s2, $t0, 9228
+			addi $s2, $t0, 9228			# update player position
 			addi $s7, $zero, 3
+			addi $a3, $a3, -1			# HP is decreased by one
+			jal clear_all_HP			# update the new HP
+			jal draw_HP
 			jal draw_player
 			j level_2_key_detect
 		
@@ -382,6 +404,9 @@ main:
 	
 	main_level_3:
 			level_3_key_detect:
+			
+			beq $a3, 0, good_bye_page				# check if HP is zero, then game is over
+			beq $a1, 0, winning_page
 			
 			jal coin_collision_check_level_3_coin_1
 			jal coin_collision_check_level_3_coin_2
@@ -440,13 +465,19 @@ main:
 				beq $t8, 1, keypress_level_3	# jump to key detection
 				j level_3_key_detect		# no key is pressed, go back to the first line 
 		
+			r_key_press_level_3:
+				addi $a3, $zero, 3		# reset player HP
+				jal clear_all_HP
+				jal draw_HP
+				j level_3_page
+		
 			keypress_level_3: 
 			lw $t7, 4($t9)					# $t7 stores the key value pressed by user
 			beq $t7, 0x64, level_3_d_pressed		# check if key 'd' is pressed
 			beq $t7, 0x61, level_3_a_pressed		# check if key 'a' is pressed
 			beq $t7, 0x77, level_3_w_pressed		# check if key 'q' is pressed
 			beq $t7, 0x71, good_bye_page			# check if key 'q' is pressed
-			beq $t7, 0x72, level_3_page			# check if key 'r' is pressed
+			beq $t7, 0x72, r_key_press_level_3		# check if key 'r' is pressed
 			j level_3_key_detect				# no key is pressed, go back to the first line 
 			
 		level_3_d_pressed:
@@ -524,8 +555,11 @@ main:
 		
 		fallToOcean_3:
 			jal delete_player
-			addi $s2, $t0, 8208
+			addi $s2, $t0, 8208			# update player position
 			addi $s7, $zero, 4
+			addi $a3, $a3, -1			# HP is decreased by one
+			jal clear_all_HP			# update the new HP
+			jal draw_HP
 			jal draw_player
 			j level_3_key_detect
 	j main
@@ -601,6 +635,7 @@ coin_collision_check_level_1_coin_1:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_11_rest
 	
 	
@@ -675,6 +710,7 @@ coin_collision_check_level_1_coin_2:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_12_rest
 		
 		
@@ -749,6 +785,7 @@ coin_collision_check_level_1_coin_3:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_13_rest
 
 
@@ -824,6 +861,7 @@ coin_collision_check_level_1_coin_4:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_14_rest
 
 
@@ -883,6 +921,9 @@ red_cross_collision_check_level_1:
 		sw $t5, -512($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		addi $a3, $a3, 1
+		jal clear_all_HP
+		jal draw_HP
 
 		j red_cross_collision_check_level_111_rest
 
@@ -945,6 +986,10 @@ grey_cross_collision_check_level_1:
 		sw $t5, -8($s3)
 		sw $t5, -520($s3)
 		sw $t5, -260($s3)
+		
+		addi $a3, $a3, -1
+		jal clear_all_HP
+		jal draw_HP
 
 		j grey_cross_collision_check_level_1111_rest
 		
@@ -1021,6 +1066,7 @@ coin_collision_check_level_2_coin_1:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_21_rest
 	
 	
@@ -1095,6 +1141,7 @@ coin_collision_check_level_2_coin_2:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_22_rest
 		
 		
@@ -1169,6 +1216,7 @@ coin_collision_check_level_2_coin_3:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_23_rest
 
 
@@ -1244,6 +1292,7 @@ coin_collision_check_level_2_coin_4:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		add $a1, $a1, -1
 		j coin_collision_check_level_24_rest
 
 
@@ -1303,7 +1352,9 @@ red_cross_collision_check_level_2:
 		sw $t5, -512($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
-
+		addi $a3, $a3, 1
+		jal clear_all_HP
+		jal draw_HP
 		j red_cross_collision_check_level_222_rest
 
 
@@ -1364,6 +1415,10 @@ grey_cross_collision_check_level_2:
 		sw $t5, 8($s3)
 		sw $t5, -252($s3)
 		sw $t5, -504($s3)
+		
+		addi $a3, $a3, -1
+		jal clear_all_HP
+		jal draw_HP
 
 		j grey_cross_collision_check_level_2222_rest
 		
@@ -1440,6 +1495,7 @@ coin_collision_check_level_3_coin_1:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		addi $a1, $a1, -1
 		j coin_collision_check_level_31_rest
 	
 	
@@ -1514,6 +1570,7 @@ coin_collision_check_level_3_coin_2:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		addi $a1, $a1, -1
 		j coin_collision_check_level_32_rest
 		
 		
@@ -1588,6 +1645,7 @@ coin_collision_check_level_3_coin_3:
 		sw $t5, -508($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
+		addi $a1, $a1, -1
 		j coin_collision_check_level_33_rest
 
 red_cross_collision_check_level_3:
@@ -1646,7 +1704,9 @@ red_cross_collision_check_level_3:
 		sw $t5, -512($s3)
 		sw $t5, -260($s3)
 		sw $t5, -252($s3)
-
+		addi $a3, $a3, 1
+		jal clear_all_HP
+		jal draw_HP
 		j red_cross_collision_check_level_333_rest
 		
 		
@@ -1707,7 +1767,11 @@ grey_cross_collision_check_level_3:
 		sw $t5, 8($s3)
 		sw $t5, -252($s3)
 		sw $t5, -504($s3)
-
+	
+		addi $a3, $a3, -1
+		jal clear_all_HP
+		jal draw_HP
+	
 		j grey_cross_collision_check_level_3333_rest
 		
 ##################################drawing functions##############################################
@@ -3024,6 +3088,8 @@ level_1_page:
 	
 	# draw HP
 	jal draw_HP
+	# set the number of coin to 4
+	addi $a1, $zero, 4
 
 	
 	# draw the white line
@@ -3119,6 +3185,8 @@ level_2_page:
 	
 	# draw HP
 	jal draw_HP
+	# set the number of coin to 4
+	addi $a1, $zero, 4
 	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
@@ -3236,6 +3304,8 @@ level_3_page:
 	
 	# draw HP
 	jal draw_HP
+	# set the number of coin to 4
+	addi $a1, $zero, 3
 	
 	# draw the white line
 	addi $s0, $zero, 0			# $s0 stores the index i = 0
@@ -3369,6 +3439,8 @@ draw_HP:
 	hp_case5:
 		bge, $a3, 5, heartdrawing5
 	hp_case6:
+		bge, $a3, 6, heartdrawing6
+	hp_case7:
 		jr $ra
 	
 	heartdrawing1:
@@ -3490,6 +3562,30 @@ draw_HP:
 		sw $t4, -756($s3)
 		sw $t4, -768($s3)
 		j hp_case6
+		
+	heartdrawing6:
+		add, $s3, $t0, 15304
+		sw $t4, ($s3)
+		sw $t4, -256($s3)
+		sw $t4, -512($s3)
+		sw $t4, -252($s3)
+		sw $t4, -508($s3)
+		sw $t4, -764($s3)
+		sw $t4, -1020($s3)
+		sw $t4, -260($s3)
+		sw $t4, -516($s3)
+		sw $t4, -772($s3)
+		sw $t4, -1028($s3)
+		sw $t4, -520($s3)
+		sw $t4, -776($s3)
+		sw $t4, -1032($s3)
+		sw $t4, -504($s3)
+		sw $t4, -760($s3)
+		sw $t4, -1016($s3)
+		sw $t4, -780($s3)
+		sw $t4, -756($s3)
+		sw $t4, -768($s3)
+		j hp_case7
 	
 # this function deletes all the HPs	
 clear_all_HP:
@@ -3503,3 +3599,148 @@ clear_all_HP:
 		j clear_allHP_for_loop
 	clear_allHP_remaining:
 		jr $ra
+		
+# this function draws the winning page
+winning_page:
+
+	# draw U
+	jal clear_screen
+	sw $t1, 4144($t0)
+	sw $t1, 4400($t0)
+	sw $t1, 4656($t0)
+	sw $t1, 4912($t0)
+	sw $t1, 5168($t0)
+	sw $t1, 5424($t0)
+	sw $t1, 5680($t0)
+	sw $t1, 5936($t0)
+	sw $t1, 6192($t0)
+	sw $t1, 6448($t0)
+	sw $t1, 6704($t0)
+	sw $t1, 6960($t0)
+	sw $t1, 7216($t0)
+	sw $t1, 7220($t0)
+	sw $t1, 7224($t0)
+	sw $t1, 7228($t0)
+	sw $t1, 7232($t0)
+	sw $t1, 7236($t0)
+	sw $t1, 7240($t0)
+	sw $t1, 7244($t0)
+	sw $t1, 7248($t0)
+	sw $t1, 7252($t0)
+	sw $t1, 7256($t0)
+	sw $t1, 7000($t0)
+	sw $t1, 6744($t0)
+	sw $t1, 6488($t0)
+	sw $t1, 6232($t0)
+	sw $t1, 5976($t0)
+	sw $t1, 5720($t0)
+	sw $t1, 5464($t0)
+	sw $t1, 5208($t0)
+	sw $t1, 4952($t0)
+	sw $t1, 4696($t0)
+	sw $t1, 4440($t0)
+	sw $t1, 4184($t0)
+	
+	# draw W
+	sw $t1, 9316($t0)
+	sw $t1, 9572($t0)
+	sw $t1, 9828($t0)
+	sw $t1, 10084($t0)
+	sw $t1, 10340($t0)
+	sw $t1, 10596($t0)
+	sw $t1, 10852($t0)
+	sw $t1, 11108($t0)
+	sw $t1, 11364($t0)
+	sw $t1, 11620($t0)
+	sw $t1, 11876($t0)
+	sw $t1, 11880($t0)
+	sw $t1, 11884($t0)
+	sw $t1, 11888($t0)
+	sw $t1, 11892($t0)
+	sw $t1, 11896($t0)
+	sw $t1, 11900($t0)
+	sw $t1, 11644($t0)
+	sw $t1, 11388($t0)
+	sw $t1, 11132($t0)
+	sw $t1, 10876($t0)
+	sw $t1, 10620($t0)
+	sw $t1, 10364($t0)
+	sw $t1, 10108($t0)
+	sw $t1, 9852($t0)
+	sw $t1, 9596($t0)
+	sw $t1, 9340($t0)
+	sw $t1, 11904($t0)
+	sw $t1, 11908($t0)
+	sw $t1, 11912($t0)
+	sw $t1, 11916($t0)
+	sw $t1, 11920($t0)
+	sw $t1, 11924($t0)
+	sw $t1, 11668($t0)
+	sw $t1, 11412($t0)
+	sw $t1, 11156($t0)
+	sw $t1, 10900($t0)
+	sw $t1, 10644($t0)
+	sw $t1, 10388($t0)
+	sw $t1, 10132($t0)
+	sw $t1, 9876($t0)
+	sw $t1, 9620($t0)
+	sw $t1, 9364($t0)
+	
+	# draw I
+	sw $t1, 9380($t0)
+	sw $t1, 9636($t0)
+	sw $t1, 9892($t0)
+	sw $t1, 10148($t0)
+	sw $t1, 10404($t0)
+	sw $t1, 10660($t0)
+	sw $t1, 10916($t0)
+	sw $t1, 11172($t0)
+	sw $t1, 11428($t0)
+	sw $t1, 11684($t0)
+	sw $t1, 11940($t0)
+	
+	# draw N
+	sw $t1, 11956($t0)
+	sw $t1, 11700($t0)
+	sw $t1, 11444($t0)
+	sw $t1, 11188($t0)
+	sw $t1, 10932($t0)
+	sw $t1, 10676($t0)
+	sw $t1, 10420($t0)
+	sw $t1, 10164($t0)
+	sw $t1, 9908($t0)
+	sw $t1, 9652($t0)
+	sw $t1, 9396($t0)
+	sw $t1, 9400($t0)
+	sw $t1, 9404($t0)
+	sw $t1, 9408($t0)
+	sw $t1, 9412($t0)
+	sw $t1, 9416($t0)
+	sw $t1, 9420($t0)
+	sw $t1, 9424($t0)
+	sw $t1, 9680($t0)
+	sw $t1, 9936($t0)
+	sw $t1, 10192($t0)
+	sw $t1, 10448($t0)
+	sw $t1, 10704($t0)
+	sw $t1, 10960($t0)
+	sw $t1, 11216($t0)
+	sw $t1, 11472($t0)
+	sw $t1, 11728($t0)
+	sw $t1, 11984($t0)
+	
+	# draw !
+	sw $t1, 9448($t0)
+	sw $t1, 9704($t0)
+	sw $t1, 9960($t0)
+	sw $t1, 10216($t0)
+	sw $t1, 10472($t0)
+	sw $t1, 10728($t0)
+	sw $t1, 10984($t0)
+	sw $t1, 11240($t0)
+	sw $t1, 11496($t0)
+	
+	sw $t1, 12008($t0)
+	
+	li $v0, 10
+	syscall					# properly terminates the program
