@@ -1,49 +1,4 @@
-#####################################################################
-#
-# CSCB58 Winter 2024 Assembly Final Project
-# University of Toronto, Scarborough
-#
-# Student: Name: Hengyi Li
-# Student Number: 1009086926
-# UTorID: lihengyi
-# official email: hengyi.li@mail.utoronto.ca
-#
-# Bitmap Display Configuration:
-# - Unit width in pixels: 4
-# - Unit height in pixels: 4
-# - Display width in pixels: 256
-# - Display height in pixels: 256
-# - Base Address for Display: 0x10008000 ($gp)
-#
-# Which milestoneshave been reached in this submission?
-# (See the assignment handout for descriptions of the milestones)
-# - Milestone 1
-# - Milestone 2
-# - Milestone 3
-# - Milestone 4 features that I picked
-#	D. Different levels
-#	G. Pick up effects
-#	J. Start Menu
-# Which approved features have been implemented for milestone 3?
-# All of Them
-#
-# Link to video demonstration for final submission:
-# - https://youtu.be/cBqwCcg4yso
-#
-# Are you OK with us sharing the video with people outside course staff?
-# - yes
-#
-# Any additional information that the TA needs to know:
-# Nothing specific and hope you enjoy the game
-#
-#####################################################################
 
-.eqv Base_Address 	0x10008000
-.eqv col_white		0xffffff
-.eqv col_yellow		0xfff200
-.eqv col_blue		0x4d6df3
-.eqv col_red		0xed1c24
-.eqv col_black		0x000000
 
 .data
 
